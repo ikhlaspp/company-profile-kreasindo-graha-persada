@@ -9,7 +9,7 @@
 >
     {{-- Brand --}}
     <div class="flex h-16 items-center gap-2.5 px-5" :class="mini ? 'lg:justify-center lg:px-0' : ''">
-        <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brass-500/15 font-display text-lg font-bold text-white ring-1 ring-brass-500/30">K<span class="text-brass-300">G</span></span>
+        <img src="{{ asset('img/Logo KGP_highres.png') }}" alt="Logo Kreasindo" class="h-9 w-auto shrink-0">
         <div class="leading-tight" x-show="!mini" x-cloak>
             <p class="font-display text-sm font-semibold text-white">Kreasindo</p>
             <p class="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">Panel Admin</p>
