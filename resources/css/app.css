@@ -1,3 +1,116 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-navy-900: #0E1B33;
+  --color-navy-800: #16284A;
+  --color-navy-700: #1F3A66;
+  --color-navy-600: #2B4E85;
+  --color-navy-100: #DDE5F0;
+  
+  --color-brass-700: #9C7A22;
+  --color-brass-500: #C9A24B;
+  --color-brass-300: #E3C677;
+  --color-brass-100: #F6ECCF;
+  
+  --color-ink: #14181F;
+  
+  --color-slate-700: #2E3A4B;
+  --color-slate-500: #5A6678;
+  --color-slate-400: #8A94A3;
+  --color-slate-300: #C2C9D4;
+  
+  --color-line: #E4E1D8;
+  --color-paper: #FAF8F2;
+  --color-paper2: #F2EFE6;
+  --color-card: #FFFFFF;
+  
+  --color-success: #2F8F63;
+  --color-info: #2563C9;
+  --color-warning: #C8841C;
+  --color-danger: #C0392B;
+  
+  --font-display: "Fraunces", serif;
+  --font-sans: "Archivo", sans-serif;
+  
+  --radius: 14px;
+  --radius-sm: 8px;
+  
+  --shadow-sm: 0 1px 2px rgba(14,27,51,.06), 0 1px 3px rgba(14,27,51,.05);
+  --shadow-md: 0 8px 24px rgba(14,27,51,.08), 0 2px 6px rgba(14,27,51,.05);
+  --shadow-lg: 0 24px 60px rgba(14,27,51,.12), 0 8px 20px rgba(14,27,51,.06);
+}
+
+/* Alpine.js: hide elements until initialised */
+[x-cloak] { display: none !important; }
+
+/* ===== Public site (company profile) ===== */
+
+/* Blueprint grid texture for dark hero sections */
+.bg-blueprint {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Soft brass glow used as decorative accent on dark sections */
+.bg-brass-glow {
+  background: radial-gradient(closest-side, rgba(201, 162, 75, 0.22), transparent 70%);
+}
+
+/* Long-form content (service/project/news detail) */
+.rich-text { color: var(--color-slate-700); line-height: 1.8; }
+.rich-text p { margin-bottom: 1.25em; }
+
+/* Skip link: hidden until keyboard-focused */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  padding: 0.625rem 1rem;
+  background: var(--color-navy-900);
+  color: #fff;
+  border-radius: 8px;
+  outline: 2px solid var(--color-brass-500);
+}
+
+/* Slim scrollbar for the admin shell */
+.\[scrollbar-width\:thin\]::-webkit-scrollbar { width: 6px; }
+.\[scrollbar-width\:thin\]::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 9999px; }
+
+/* Hide scrollbar but keep scrolling (sidebar nav) */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Tabular figures for KPIs, tables, and paginated counts (prevents jitter) */
+.tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* Sidebar rail geometry (desktop). Driven by `html.sidebar-collapsed`, which is
+   set BEFORE first paint by an inline <head> script — so the page loads with the
+   correct width and never flashes/animates from full → mini on navigation.
+   Toggling is instant (no transition) by design. */
+@media (min-width: 1024px) {
+  #kgp-sidebar { width: 260px; }
+  #kgp-shell   { padding-left: 260px; }
+  html.sidebar-collapsed #kgp-sidebar { width: 72px; }
+  html.sidebar-collapsed #kgp-shell   { padding-left: 72px; }
+
+  /* Smooth toggle — but ONLY after first paint (class added post-load), so a
+     page navigation never animates (no flash), while clicking the toggle does. */
+  html.sidebar-anim #kgp-sidebar { transition: width 0.25s ease; }
+  html.sidebar-anim #kgp-shell   { transition: padding-left 0.25s ease; }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
