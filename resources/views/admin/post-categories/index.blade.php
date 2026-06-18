@@ -1,0 +1,52 @@
+@extends('admin.layouts.admin')
+
+@section('content')
+    <div x-data="{ adding: false }">
+        <x-admin.page-header title="Kategori Berita" :breadcrumb="['Berita' => route('panel.posts.index'), 'Kategori' => null]">
+            <x-admin.btn variant="accent" x-on:click="adding = true"><x-admin.icon name="plus" class="h-4 w-4" />Tambah Kategori</x-admin.btn>
+        </x-admin.page-header>
+
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div class="lg:col-span-2">
+                <x-admin.data-table>
+                    <x-slot name="head">
+                        <th class="px-5 py-3 font-semibold">Nama</th>
+                        <th class="px-5 py-3 font-semibold">Slug</th>
+                        <th class="px-5 py-3 font-semibold">Artikel</th>
+                        <th class="px-5 py-3 text-right font-semibold">Aksi</th>
+                    </x-slot>
+                    @forelse ($items as $item)
+                        <tr class="transition-colors hover:bg-paper2/50">
+                            <td class="px-5 py-3.5 font-semibold text-navy-900">{{ $item->name }}</td>
+                            <td class="px-5 py-3.5 text-slate-500">/{{ $item->slug }}</td>
+                            <td class="px-5 py-3.5"><x-admin.badge>{{ $item->posts_count }} artikel</x-admin.badge></td>
+                            <td class="px-5 py-3.5">
+                                <div class="flex items-center justify-end gap-1">
+                                    <button @click="$dispatch('open-modal-delete', { label: @js($item->name), url: @js(route('panel.post-categories.destroy', $item->id)) })" class="rounded-lg p-2 text-danger transition-colors hover:bg-danger/10"><x-admin.icon name="trash" class="h-4 w-4" /></button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="4" class="px-5 py-10 text-center text-sm text-slate-500">Belum ada kategori.</td></tr>
+                    @endforelse
+                </x-admin.data-table>
+            </div>
+
+            {{-- Inline add panel --}}
+            <div x-show="adding" x-cloak x-transition class="self-start rounded-xl border border-line bg-card p-6 shadow-sm">
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="font-display text-base font-semibold text-navy-900">Kategori Baru</h2>
+                    <button @click="adding=false" class="text-slate-500 hover:text-navy-900">✕</button>
+                </div>
+                <form action="{{ route('panel.post-categories.store') }}" method="POST" class="space-y-4">
+                    @csrf
+                    <x-admin.form.input label="Nama" name="name" required />
+                    <x-admin.form.input label="Slug" name="slug" prefix="/" />
+                    <x-admin.btn variant="primary" type="submit" class="w-full">Simpan</x-admin.btn>
+                </form>
+            </div>
+        </div>
+
+        <x-admin.modal name="delete" title="Hapus Kategori" message="Kategori berikut akan dihapus:" />
+    </div>
+@endsection
