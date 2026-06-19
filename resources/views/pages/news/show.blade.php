@@ -61,14 +61,24 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto">
 
-      {{-- Featured thumbnail --}}
-      @if($post->thumbnail)
+      {{-- Featured thumbnail (branded placeholder when none uploaded) --}}
       <div class="aspect-[16/8] overflow-hidden rounded-sm mb-10 shadow-md">
-        <img src="{{ asset('storage/'.$post->thumbnail) }}"
-             alt="{{ $post->title }}"
-             class="w-full h-full object-cover">
+        @if($post->thumbnail)
+          <img src="{{ asset('storage/'.$post->thumbnail) }}"
+               alt="{{ $post->title }}"
+               class="w-full h-full object-cover">
+        @else
+          <div class="w-full h-full bg-navy-900 bg-blueprint flex items-center justify-center relative">
+            <div class="absolute inset-0 bg-brass-glow opacity-40"></div>
+            <div class="relative flex flex-col items-center gap-3 text-center px-6">
+              <span class="w-14 h-14 border-2 border-brass-500 rounded-sm flex items-center justify-center font-display font-bold text-2xl text-white">K</span>
+              @if($post->category)
+              <span class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-300">{{ $post->category->name }}</span>
+              @endif
+            </div>
+          </div>
+        @endif
       </div>
-      @endif
 
       {{-- Article content --}}
       @if($post->content)
