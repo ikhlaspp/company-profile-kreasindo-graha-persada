@@ -128,14 +128,8 @@
                 <x-button as="a" href="{{ route('about') }}" variant="primary" size="lg">Selengkapnya</x-button>
             </div>
         </div>
-        <div class="relative">
-            <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-lg">
-                <img src="{{ kgp_image(null, $about['image_seed'], 900, 700) }}" alt="Gedung {{ $about['name'] }}" class="w-full h-full object-cover" loading="lazy">
-            </div>
-            <div class="absolute -bottom-5 -left-5 hidden sm:block bg-navy-800 text-white rounded-sm px-6 py-4 shadow-lg">
-                <p class="font-display text-2xl font-semibold text-brass-300 tabular">9+</p>
-                <p class="text-xs font-sans uppercase tracking-wide text-slate-300">Tahun Membangun</p>
-            </div>
+        <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-lg">
+            <img src="{{ kgp_image(null, $about['image_seed'], 900, 700) }}" alt="Gedung {{ $about['name'] }}" class="w-full h-full object-cover" loading="lazy">
         </div>
     </div>
 </section>
