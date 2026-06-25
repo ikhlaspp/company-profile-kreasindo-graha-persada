@@ -30,11 +30,12 @@ class PageController extends Controller
      */
     public function home(): View
     {
-        // Hero slideshow — static KGP wording overlaid on each slide; images via kgp_image().
+        // Hero slideshow — static KGP wording overlaid on each slide.
+        // Construction photos bundled in public/img/hero (Pexels license, free for commercial use).
         $heroSlides = [
-            ['seed' => 'kgp-hero-1', 'w' => 1600, 'h' => 900],
-            ['seed' => 'kgp-hero-2', 'w' => 1600, 'h' => 900],
-            ['seed' => 'kgp-hero-3', 'w' => 1600, 'h' => 900],
+            ['img' => 'img/hero/slide-1.jpg'],
+            ['img' => 'img/hero/slide-2.jpg'],
+            ['img' => 'img/hero/slide-3.jpg'],
         ];
 
         // Portfolio gallery — featured (fallback to latest active) projects.

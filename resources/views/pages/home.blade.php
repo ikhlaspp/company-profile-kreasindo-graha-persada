@@ -30,7 +30,7 @@
     {{-- Slides --}}
     @foreach($heroSlides as $i => $slide)
     <div x-show="active === {{ $i }}" x-transition.opacity.duration.700ms class="absolute inset-0" @if($i>0) x-cloak @endif>
-        <img src="{{ kgp_image(null, $slide['seed'], $slide['w'], $slide['h']) }}"
+        <img src="{{ asset($slide['img']) }}"
              alt="" class="w-full h-full object-cover" @if($i>0) loading="lazy" @endif>
         <div class="absolute inset-0 bg-gradient-to-b from-navy-900/70 via-navy-900/40 to-navy-900/80"></div>
     </div>
