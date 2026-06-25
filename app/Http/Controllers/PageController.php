@@ -30,58 +30,57 @@ class PageController extends Controller
      */
     public function home(): View
     {
-        $stats = [
-            ['value' => Project::where('is_active', true)->count(), 'suffix' => '+', 'label' => 'Proyek Selesai'],
-            ['value' => Client::where('is_active', true)->count(), 'suffix' => '+', 'label' => 'Klien Aktif'],
-            ['value' => 2016, 'suffix' => '', 'label' => 'Sejak Tahun'],
-            ['value' => 2, 'suffix' => '', 'label' => 'Divisi Utama'],
+        // Hero slideshow — static KGP wording overlaid on each slide; images via kgp_image().
+        $heroSlides = [
+            ['seed' => 'kgp-hero-1', 'w' => 1600, 'h' => 900],
+            ['seed' => 'kgp-hero-2', 'w' => 1600, 'h' => 900],
+            ['seed' => 'kgp-hero-3', 'w' => 1600, 'h' => 900],
         ];
 
-        $featured = Project::query()
+        // Portfolio gallery — featured (fallback to latest active) projects.
+        $galleryProjects = Project::query()
             ->with(['client', 'images'])
             ->where('is_active', true)
-            ->where('is_featured', true)
+            ->orderByDesc('is_featured')
             ->orderBy('sort_order')
             ->latest('id')
-            ->take(3)
+            ->take(6)
             ->get()
             ->map(function (Project $project) {
                 $cover = $project->images->firstWhere('is_cover', true) ?? $project->images->first();
 
                 return [
                     'title' => $project->title,
-                    'division' => $project->division,
-                    'year' => $project->year,
-                    'client' => $project->client?->name ?? '—',
-                    'cover' => $cover ? asset('storage/'.$cover->file_path) : '',
                     'slug' => $project->slug,
+                    'division' => $project->division,
+                    'path' => $cover?->file_path,
+                    'seed' => 'proj-'.$project->id,
                 ];
             })
             ->all();
 
-        $divisions = [
-            [
-                'title' => 'Divisi IT',
-                'desc' => 'Solusi teknologi komprehensif mulai dari pengembangan perangkat lunak, infrastruktur jaringan, hingga keamanan sistem untuk instansi Anda.',
-                'slug' => 'it',
-                'icon' => '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
-            ],
-            [
-                'title' => 'Divisi Interior',
-                'desc' => 'Layanan desain dan konstruksi interior profesional yang mengutamakan estetika, fungsionalitas, dan kenyamanan ruang kerja Anda.',
-                'slug' => 'interior',
-                'icon' => '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>',
-            ],
+        $settings = Setting::query()
+            ->whereIn('group', ['general', 'company'])
+            ->pluck('value', 'key');
+
+        // About preview block.
+        $about = [
+            'name' => $settings['site_name'] ?? 'PT. Kreasindo Graha Persada',
+            'excerpt' => $settings['company_history']
+                ?? 'Sejak 2016, PT. Kreasindo Graha Persada dipercaya instansi pemerintah, militer, BUMN, dan korporasi untuk solusi IT dan Interior terpadu. Kami dikenal karena inovasi, personalisasi, dan komitmen melampaui ekspektasi.',
+            'image_seed' => 'kgp-about',
         ];
 
+        // Clients grid.
         $clients = Client::query()
             ->where('is_active', true)
             ->orderBy('sort_order')
-            ->take(8)
+            ->take(12)
             ->get()
             ->map(fn (Client $client) => [
                 'name' => $client->name,
-                'logo' => $client->logo ? asset('storage/'.$client->logo) : '',
+                'path' => $client->logo,
+                'seed' => 'client-'.$client->id,
             ])
             ->all();
 
@@ -89,7 +88,7 @@ class PageController extends Controller
             ->whereIn('group', ['general', 'contact', 'social'])
             ->pluck('value', 'key');
 
-        return view('pages.home', compact('stats', 'featured', 'divisions', 'clients', 'org'));
+        return view('pages.home', compact('heroSlides', 'galleryProjects', 'about', 'clients', 'org'));
     }
 
     /**
