@@ -2,28 +2,42 @@
     $phone = $site['contact_phone'] ?? null;
     $email = $site['contact_email'] ?? null;
 
-    // Tautan utama + grup "Profil" agar navigasi tetap ringkas dan profesional.
-    $primaryLinks = [
-        ['route' => 'home', 'pattern' => 'home', 'label' => 'Beranda'],
-        ['route' => 'services.index', 'pattern' => 'services.*', 'label' => 'Layanan'],
-        ['route' => 'portfolio.index', 'pattern' => 'portfolio.*', 'label' => 'Portofolio'],
-        ['route' => 'gallery.index', 'pattern' => 'gallery.*', 'label' => 'Galeri'],
-        ['route' => 'news.index', 'pattern' => 'news.*', 'label' => 'Berita'],
+    // Navigasi dikelompokkan agar ringkas: Beranda + 3 grup dropdown + CTA.
+    $groups = [
+        'perusahaan' => [
+            'label' => 'Perusahaan',
+            'patterns' => ['about', 'clients', 'careers'],
+            'links' => [
+                ['route' => 'about', 'pattern' => 'about', 'label' => 'Tentang Kami'],
+                ['route' => 'clients', 'pattern' => 'clients', 'label' => 'Klien Kami'],
+                ['route' => 'careers', 'pattern' => 'careers', 'label' => 'Karir'],
+            ],
+        ],
+        'proyek' => [
+            'label' => 'Proyek',
+            'patterns' => ['portfolio.*', 'gallery.*', 'services.*'],
+            'links' => [
+                ['route' => 'portfolio.index', 'pattern' => 'portfolio.*', 'label' => 'Portofolio'],
+                ['route' => 'gallery.index', 'pattern' => 'gallery.*', 'label' => 'Galeri'],
+                ['route' => 'services.index', 'pattern' => 'services.*', 'label' => 'Layanan'],
+            ],
+        ],
+        'media' => [
+            'label' => 'Media',
+            'patterns' => ['news.*', 'documents'],
+            'links' => [
+                ['route' => 'news.index', 'pattern' => 'news.*', 'label' => 'Berita'],
+                ['route' => 'documents', 'pattern' => 'documents', 'label' => 'Dokumen'],
+            ],
+        ],
     ];
 
-    $profileLinks = [
-        ['route' => 'about', 'pattern' => 'about', 'label' => 'Tentang Kami'],
-        ['route' => 'clients', 'pattern' => 'clients', 'label' => 'Klien Kami'],
-        ['route' => 'documents', 'pattern' => 'documents', 'label' => 'Dokumen'],
-        ['route' => 'careers', 'pattern' => 'careers', 'label' => 'Karir'],
-    ];
-
-    $profileActive = collect($profileLinks)->contains(fn ($l) => request()->routeIs($l['pattern']));
+    $groupActive = fn (array $g) => collect($g['patterns'])->contains(fn ($p) => request()->routeIs($p));
 @endphp
 
-<header x-data="{ open: false, drop: false, scrolled: false }"
+<header x-data="{ open: false, menu: null, scrolled: false }"
         @scroll.window="scrolled = window.scrollY > 40"
-        @keydown.escape.window="open = false; drop = false"
+        @keydown.escape.window="open = false; menu = null"
         class="fixed inset-x-0 top-0 z-50">
 
     {{-- Bar utilitas: kontak resmi (desktop, menyusut saat scroll) --}}
@@ -63,41 +77,42 @@
             </a>
 
             {{-- Menu desktop --}}
-            <div class="hidden lg:flex items-center gap-1 text-sm font-medium">
-                @foreach($primaryLinks as $link)
-                    <a href="{{ route($link['route']) }}"
-                       @class([
-                           'relative px-3 py-2 rounded-sm transition-colors hover:text-brass-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-500',
-                           'text-brass-300 after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-0.5 after:bg-brass-500' => request()->routeIs($link['pattern']),
-                       ])
-                       @if(request()->routeIs($link['pattern'])) aria-current="page" @endif>
-                        {{ $link['label'] }}
-                    </a>
-                @endforeach
+            <div class="hidden lg:flex items-center gap-1 text-sm font-medium" @click.outside="menu = null">
+                {{-- Beranda --}}
+                <a href="{{ route('home') }}"
+                   @class([
+                       'relative px-3 py-2 rounded-sm transition-colors hover:text-brass-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-500',
+                       'text-brass-300 after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-0.5 after:bg-brass-500' => request()->routeIs('home'),
+                   ])
+                   @if(request()->routeIs('home')) aria-current="page" @endif>
+                    Beranda
+                </a>
 
-                {{-- Dropdown Profil --}}
-                <div class="relative" @click.outside="drop = false">
-                    <button @click="drop = !drop" :aria-expanded="drop" aria-haspopup="true"
-                            @class([
-                                'inline-flex items-center gap-1 px-3 py-2 rounded-sm transition-colors hover:text-brass-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-500',
-                                'text-brass-300' => $profileActive,
-                            ])>
-                        Profil
-                        <svg class="w-4 h-4 transition-transform" :class="drop ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div x-show="drop" x-cloak x-transition.origin.top
-                         class="absolute right-0 mt-2 w-52 bg-white text-navy-900 rounded-sm shadow-lg border border-line py-2">
-                        @foreach($profileLinks as $link)
-                            <a href="{{ route($link['route']) }}"
-                               @class([
-                                   'block px-4 py-2.5 text-sm hover:bg-paper2 hover:text-brass-700 transition-colors',
-                                   'text-brass-700 font-semibold' => request()->routeIs($link['pattern']),
-                               ])>
-                                {{ $link['label'] }}
-                            </a>
-                        @endforeach
+                {{-- Grup dropdown --}}
+                @foreach($groups as $key => $group)
+                    <div class="relative">
+                        <button @click="menu = (menu === '{{ $key }}' ? null : '{{ $key }}')" :aria-expanded="menu === '{{ $key }}'" aria-haspopup="true"
+                                @class([
+                                    'inline-flex items-center gap-1 px-3 py-2 rounded-sm transition-colors hover:text-brass-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brass-500',
+                                    'text-brass-300' => $groupActive($group),
+                                ])>
+                            {{ $group['label'] }}
+                            <svg class="w-4 h-4 transition-transform" :class="menu === '{{ $key }}' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div x-show="menu === '{{ $key }}'" x-cloak x-transition.origin.top
+                             class="absolute left-0 mt-2 w-52 bg-white text-navy-900 rounded-sm shadow-lg border border-line py-2">
+                            @foreach($group['links'] as $link)
+                                <a href="{{ route($link['route']) }}"
+                                   @class([
+                                       'block px-4 py-2.5 text-sm hover:bg-paper2 hover:text-brass-700 transition-colors',
+                                       'text-brass-700 font-semibold' => request()->routeIs($link['pattern']),
+                                   ])>
+                                    {{ $link['label'] }}
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @endforeach
 
                 <x-button variant="accent" as="a" href="{{ route('contact') }}" class="ml-3">Hubungi Kami</x-button>
             </div>
@@ -116,25 +131,26 @@
         <div id="menu-mobile" x-show="open" x-cloak x-transition.origin.top
              class="lg:hidden bg-navy-900 absolute top-full left-0 w-full shadow-lg border-t border-white/10 max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div class="px-4 sm:px-6 py-5 space-y-1">
-                @foreach($primaryLinks as $link)
-                    <a href="{{ route($link['route']) }}"
-                       @class([
-                           'block px-3 py-2.5 rounded-sm text-white hover:bg-white/5 hover:text-brass-300 transition-colors',
-                           'text-brass-300 bg-white/5 font-semibold' => request()->routeIs($link['pattern']),
-                       ])>
-                        {{ $link['label'] }}
-                    </a>
-                @endforeach
+                {{-- Beranda --}}
+                <a href="{{ route('home') }}"
+                   @class([
+                       'block px-3 py-2.5 rounded-sm text-white hover:bg-white/5 hover:text-brass-300 transition-colors',
+                       'text-brass-300 bg-white/5 font-semibold' => request()->routeIs('home'),
+                   ])>
+                    Beranda
+                </a>
 
-                <p class="px-3 pt-4 pb-1 text-[11px] font-semibold tracking-[0.2em] uppercase text-slate-400">Profil Perusahaan</p>
-                @foreach($profileLinks as $link)
-                    <a href="{{ route($link['route']) }}"
-                       @class([
-                           'block px-3 py-2.5 rounded-sm text-white hover:bg-white/5 hover:text-brass-300 transition-colors',
-                           'text-brass-300 bg-white/5 font-semibold' => request()->routeIs($link['pattern']),
-                       ])>
-                        {{ $link['label'] }}
-                    </a>
+                @foreach($groups as $group)
+                    <p class="px-3 pt-4 pb-1 text-[11px] font-semibold tracking-[0.2em] uppercase text-slate-400">{{ $group['label'] }}</p>
+                    @foreach($group['links'] as $link)
+                        <a href="{{ route($link['route']) }}"
+                           @class([
+                               'block px-3 py-2.5 rounded-sm text-white hover:bg-white/5 hover:text-brass-300 transition-colors',
+                               'text-brass-300 bg-white/5 font-semibold' => request()->routeIs($link['pattern']),
+                           ])>
+                            {{ $link['label'] }}
+                        </a>
+                    @endforeach
                 @endforeach
 
                 <div class="pt-4 pb-2">
