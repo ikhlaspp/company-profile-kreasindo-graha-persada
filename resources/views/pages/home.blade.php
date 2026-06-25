@@ -152,13 +152,13 @@
         </div>
 
         @if(count($clients))
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
             @foreach($clients as $c)
-            <div class="p-5 flex flex-col items-center text-center gap-3">
-                <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center">
-                    <img src="{{ kgp_image($c['path'], $c['seed'], 120, 120) }}" alt="{{ $c['name'] }}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy">
+            <div class="p-4 flex flex-col items-center text-center gap-4">
+                <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden flex items-center justify-center">
+                    <img src="{{ kgp_image($c['path'], $c['seed'], 200, 200) }}" alt="{{ $c['name'] }}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy">
                 </div>
-                <p class="font-sans text-xs font-semibold text-navy-800 leading-snug">{{ $c['name'] }}</p>
+                <p class="font-sans text-sm sm:text-base font-semibold text-navy-800 leading-snug">{{ $c['name'] }}</p>
             </div>
             @endforeach
         </div>
