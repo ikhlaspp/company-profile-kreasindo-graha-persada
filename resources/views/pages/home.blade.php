@@ -154,9 +154,9 @@
         @if(count($clients))
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             @foreach($clients as $c)
-            <div class="bg-card border border-line rounded-sm p-5 flex flex-col items-center text-center gap-3 hover:shadow-md transition-shadow">
-                <div class="w-16 h-16 rounded-full overflow-hidden bg-paper2 flex items-center justify-center">
-                    <img src="{{ kgp_image($c['path'], $c['seed'], 120, 120) }}" alt="{{ $c['name'] }}" class="w-full h-full object-cover" loading="lazy">
+            <div class="p-5 flex flex-col items-center text-center gap-3">
+                <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center">
+                    <img src="{{ kgp_image($c['path'], $c['seed'], 120, 120) }}" alt="{{ $c['name'] }}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy">
                 </div>
                 <p class="font-sans text-xs font-semibold text-navy-800 leading-snug">{{ $c['name'] }}</p>
             </div>
