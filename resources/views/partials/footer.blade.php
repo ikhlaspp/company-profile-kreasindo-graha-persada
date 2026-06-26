@@ -19,7 +19,7 @@
         {{-- Brand --}}
         <div class="lg:col-span-4">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-3 mb-5">
-                <span class="w-10 h-10 border-2 border-brass-500 rounded-sm flex items-center justify-center font-display font-bold text-lg text-white" aria-hidden="true">K</span>
+                <img src="{{ asset('img/kgp-logo.png') }}" alt="Logo PT. Kreasindo Graha Persada" class="w-11 h-11 object-contain flex-shrink-0">
                 <span class="leading-tight">
                     <span class="block font-display font-bold text-lg tracking-[0.18em] text-white">KGP</span>
                     <span class="block text-[10px] font-medium tracking-[0.08em] uppercase">Kreasindo Graha Persada</span>
