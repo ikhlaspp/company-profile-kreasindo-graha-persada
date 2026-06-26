@@ -104,7 +104,7 @@
       @foreach($gallery->photos as $i => $photo)
       @php
         $delay = ($i % 8) * 60;
-        {{-- Alternate aspect ratios for visual variety --}}
+        // Alternate aspect ratios for visual variety
         $aspects = ['aspect-square', 'aspect-[4/3]', 'aspect-square', 'aspect-[3/4]', 'aspect-[4/3]', 'aspect-square', 'aspect-[4/3]', 'aspect-square'];
         $aspect = $aspects[$i % count($aspects)];
       @endphp

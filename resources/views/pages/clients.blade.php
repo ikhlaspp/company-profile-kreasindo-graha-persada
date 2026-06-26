@@ -30,7 +30,7 @@
         <p class="font-sans text-xs text-navy-100 mt-1 uppercase tracking-widest">Tahun Pengalaman</p>
       </div>
       <div>
-        <p class="font-display text-3xl font-semibold text-brass-300 tabular">{{ $categories->count() ?? count($categories) }}+</p>
+        <p class="font-display text-3xl font-semibold text-brass-300 tabular">{{ count($categories) }}+</p>
         <p class="font-sans text-xs text-navy-100 mt-1 uppercase tracking-widest">Kategori Klien</p>
       </div>
       <div>
