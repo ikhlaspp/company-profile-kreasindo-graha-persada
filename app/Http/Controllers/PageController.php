@@ -196,9 +196,9 @@ class PageController extends Controller
         ];
 
         $directors = [
-            ['name' => 'Budi Santoso', 'position' => 'Direktur Utama', 'photo' => ''],
-            ['name' => 'Andi Wijaya', 'position' => 'Direktur IT', 'photo' => ''],
-            ['name' => 'Siti Aminah', 'position' => 'Direktur Operasional', 'photo' => ''],
+            ['name' => 'Razzif Eka Darma', 'position' => 'Direktur Utama', 'photo' => ''],
+            ['name' => 'Muhammad Rido', 'position' => 'Direktur Operasional', 'photo' => ''],
+            ['name' => 'Yoyon Setiawan', 'position' => 'Direktur Marketing', 'photo' => ''],
         ];
 
         $legalities = [
