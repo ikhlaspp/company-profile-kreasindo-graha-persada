@@ -80,7 +80,7 @@
 {{-- 2. PORTFOLIO GALLERY --}}
 <section class="bg-paper py-16 lg:py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+        <div class="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
             <div class="max-w-2xl">
                 <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-700 mb-2">Portofolio</p>
                 <h2 class="font-display text-3xl sm:text-4xl text-navy-800 font-semibold">Proyek Unggulan</h2>
@@ -92,7 +92,7 @@
         </div>
 
         @if(count($galleryProjects))
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[200px] sm:auto-rows-[240px]">
+        <div class="reveal grid grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[200px] sm:auto-rows-[240px]">
             @foreach($galleryProjects as $i => $p)
             <a href="{{ route('portfolio.show', $p['slug']) }}"
                @class([
@@ -120,7 +120,7 @@
 {{-- 3. ABOUT PREVIEW --}}
 <section class="bg-paper2 py-16 lg:py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
+        <div class="reveal">
             <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-700 mb-3">Tentang Kami</p>
             <h2 class="font-display text-3xl sm:text-4xl text-navy-800 font-semibold leading-tight">{{ $about['name'] }}</h2>
             <p class="mt-6 font-sans text-slate-500 leading-relaxed max-w-xl">{{ \Illuminate\Support\Str::limit($about['excerpt'], 360) }}</p>
@@ -128,7 +128,7 @@
                 <x-button as="a" href="{{ route('about') }}" variant="primary" size="lg">Selengkapnya</x-button>
             </div>
         </div>
-        <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-lg">
+        <div class="reveal aspect-[4/3] overflow-hidden rounded-sm shadow-lg" style="transition-delay:120ms">
             <img src="{{ kgp_image(null, $about['image_seed'], 900, 700) }}" alt="Gedung {{ $about['name'] }}" class="w-full h-full object-cover" loading="lazy">
         </div>
     </div>
@@ -137,7 +137,7 @@
 {{-- 4. CLIENTS --}}
 <section class="bg-paper py-16 lg:py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-12">
+        <div class="reveal text-center max-w-2xl mx-auto mb-12">
             <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-700 mb-2">Klien Kami</p>
             <h2 class="font-display text-3xl sm:text-4xl text-navy-800 font-semibold">Dipercaya Instansi Terkemuka</h2>
             <p class="mt-4 font-sans text-slate-500 leading-relaxed">
@@ -166,7 +166,7 @@
 <section class="relative py-20 lg:py-28 overflow-hidden">
     <img src="{{ asset('img/hero/contact-band.jpg') }}" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy">
     <div class="absolute inset-0 bg-navy-900/85"></div>
-    <div class="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+    <div class="reveal relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
         <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-300 mb-3">Mari Berkolaborasi</p>
         <h2 class="font-display text-3xl sm:text-4xl text-white font-semibold leading-tight">Siap Mewujudkan Proyek Anda Bersama KGP?</h2>
         <p class="mt-5 font-sans text-slate-300 leading-relaxed">

@@ -43,6 +43,22 @@
 /* Alpine.js: hide elements until initialised */
 [x-cloak] { display: none !important; }
 
+/* Scroll reveal — subtle fade/slide-up (toggled by IntersectionObserver in app.js) */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* Optional stagger via inline style: style="transition-delay:120ms" */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
 /* ===== Public site (company profile) ===== */
 
 /* Blueprint grid texture for dark hero sections */
