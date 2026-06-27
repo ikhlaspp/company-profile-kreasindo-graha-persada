@@ -107,7 +107,6 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
     <div class="mb-12 reveal">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-2">01 — Profil</p>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Profil Perusahaan</h2>
     </div>
 
@@ -205,7 +204,6 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
     <div class="mb-12 reveal">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-2">02 — Arah Perusahaan</p>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Visi &amp; Misi</h2>
     </div>
 
@@ -251,7 +249,6 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
     <div class="mb-8 reveal">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-2">03 — Peranan</p>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Peranan &amp; Komitmen</h2>
     </div>
 
@@ -320,7 +317,6 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
     <div class="mb-12 reveal">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-2">04 — Legalitas</p>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Dokumen Resmi Perusahaan</h2>
       <p class="mt-3 font-sans text-slate-500 max-w-xl">
         Seluruh dokumen legalitas KGP telah terverifikasi. Klik badge untuk mengunduh pada halaman Dokumen.
@@ -377,7 +373,6 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
     <div class="mb-12 reveal">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-2">05 — Kepemimpinan</p>
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Struktur &amp; Manajemen</h2>
     </div>
 
