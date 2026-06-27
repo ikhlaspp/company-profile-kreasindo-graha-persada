@@ -52,31 +52,28 @@
       { id: 'legalitas', label: 'Legalitas' },
       { id: 'struktur',  label: 'Struktur & Manajemen' }
     ],
+    ids: ['profil','visi-misi','peranan','legalitas','struktur'],
     scrollTo(id) {
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!el) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.active = id;
+      el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    },
+    spy() {
+      // Active = the last section whose top has scrolled above the tab bar line.
+      const offset = 160; // fixed navbar (~64) + sticky tab bar (~48) + margin
+      let current = this.ids[0];
+      for (const id of this.ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= offset) current = id;
+      }
+      this.active = current;
     },
     init() {
-      const sections = ['profil','visi-misi','peranan','legalitas','struktur']
-        .map(id => document.getElementById(id))
-        .filter(Boolean);
-
-      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        return;
-      }
-
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            this.active = entry.target.id;
-          }
-        });
-      }, {
-        rootMargin: '-20% 0px -60% 0px',
-        threshold: 0
-      });
-
-      sections.forEach(s => io.observe(s));
+      this.spy();
+      window.addEventListener('scroll', () => this.spy(), { passive: true });
+      window.addEventListener('resize', () => this.spy(), { passive: true });
     }
   }"
   class="sticky top-16 z-30 w-full bg-paper2/95 backdrop-blur border-y border-line shadow-sm"
