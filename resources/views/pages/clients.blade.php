@@ -41,73 +41,59 @@
   </div>
 </section>
 
-{{-- CLIENT CATEGORIES --}}
-@foreach($categories as $key => $label)
-@php $group = $clients[$key] ?? []; $count = is_countable($group) ? count($group) : 0; @endphp
+{{-- CLIENT LOGO GRID — flat layout: logo on top, client name underneath --}}
+@php
+  // Flatten the category-grouped collection into one ordered list.
+  $allClients = collect($clients)->flatten(1)->sortBy('sort_order')->values();
 
-<section class="{{ $loop->even ? 'bg-paper2' : 'bg-paper' }} py-16 lg:py-20">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 reveal">
+  // Initials (max 2 words, skips PT./CV.) for the placeholder badge until a real logo is uploaded.
+  $clientInitials = function ($name) {
+      $clean = preg_replace('/^(PT\.?|CV\.?)\s+/i', '', trim($name));
+      $words = preg_split('/\s+/', $clean);
+      return strtoupper(implode('', array_map(fn ($w) => substr($w, 0, 1), array_slice($words, 0, 2))));
+  };
+@endphp
 
-    {{-- Category heading --}}
-    <div class="flex items-center gap-4 mb-10">
-      <div class="w-12 h-12 rounded-sm flex items-center justify-center flex-shrink-0 font-sans font-bold text-xs border
-        @if($key === 'militer') bg-navy-100 text-navy-800 border-navy-200
-        @elseif($key === 'pemerintah') bg-green-50 text-green-800 border-green-100
-        @elseif($key === 'bumn') bg-brass-100 text-brass-700 border-brass-200
-        @else bg-blue-50 text-blue-800 border-blue-100
-        @endif">
-        {{ strtoupper(substr($key, 0, 3)) }}
-      </div>
-      <div>
-        <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-1">
-          @if($key === 'militer') TNI / Polri
-          @elseif($key === 'pemerintah') Instansi Pemerintah
-          @elseif($key === 'bumn') Perusahaan Negara
-          @else Sektor Swasta
-          @endif
-        </p>
-        <h2 class="font-display text-2xl lg:text-3xl font-semibold text-navy-900">{{ $label }}</h2>
-        @if($count > 0)
-        <p class="font-sans text-sm text-slate-400 mt-0.5">{{ $count }} instansi terdaftar</p>
-        @endif
-      </div>
+<section class="bg-paper py-16 lg:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+    <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-3">Klien Kami</p>
+      <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900 mb-4">Dipercaya Instansi Terkemuka</h2>
+      <p class="font-sans text-slate-500 leading-relaxed">
+        Kami berkesempatan melayani berbagai instansi pemerintah, TNI/Polri, BUMN, universitas,
+        dan korporasi nasional di seluruh Indonesia.
+      </p>
     </div>
 
-    {{-- Client logo wall --}}
-    @if($count > 0)
-    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4 lg:gap-5">
-      @foreach($group as $i => $client)
-      @php
-        $delay = ($i % 8) * 60;
-      @endphp
+    @if($allClients->isNotEmpty())
+    <div class="reveal grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-12">
+      @foreach($allClients as $i => $client)
+      @php $delay = ($i % 5) * 60; @endphp
 
       @if(!empty($client->website))
       <a href="{{ $client->website }}" target="_blank" rel="noopener"
-         class="group flex flex-col items-center gap-3 p-4 bg-card border border-line rounded-sm shadow-sm
-                hover:border-brass-500/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
-         style="transition-delay: {{ $delay }}ms"
-         title="{{ $client->name }}">
+         class="group flex flex-col items-center text-center gap-4" title="{{ $client->name }}"
+         style="transition-delay: {{ $delay }}ms">
       @else
-      <div class="group flex flex-col items-center gap-3 p-4 bg-card border border-line rounded-sm shadow-sm
-                  hover:border-brass-500/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
-           style="transition-delay: {{ $delay }}ms">
+      <div class="group flex flex-col items-center text-center gap-4" style="transition-delay: {{ $delay }}ms">
       @endif
 
-        {{-- Logo circle --}}
-        <div class="w-14 h-14 rounded-full bg-paper2 border border-line flex items-center justify-center overflow-hidden flex-shrink-0 group-hover:border-brass-300/40 transition-colors">
+        {{-- Logo (real upload if present, else initials placeholder) --}}
+        <div class="w-24 h-24 rounded-full bg-card border border-line shadow-sm flex items-center justify-center overflow-hidden
+                    group-hover:border-brass-500/50 group-hover:shadow-md transition-all duration-300">
           @if(!empty($client->logo))
-            <img src="{{ kgp_image($client->logo, 'client-'.$client->id, 200, 200) }}"
-                 alt="{{ $client->name }}"
-                 class="w-10 h-10 object-contain grayscale group-hover:grayscale-0 transition-all duration-300">
+            <img src="{{ asset('storage/'.$client->logo) }}" alt="{{ $client->name }}"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
           @else
-            <span class="font-display text-lg font-semibold text-navy-700 group-hover:text-navy-900 transition-colors">
-              {{ strtoupper(substr($client->name, 0, 1)) }}
+            <span class="font-display text-2xl font-bold text-navy-700 group-hover:text-brass-700 transition-colors">
+              {{ $clientInitials($client->name) }}
             </span>
           @endif
         </div>
 
         {{-- Client name --}}
-        <p class="font-sans text-xs text-slate-500 group-hover:text-navy-700 text-center leading-tight transition-colors line-clamp-2">
+        <p class="font-sans text-sm font-semibold text-navy-800 leading-snug max-w-[12rem]">
           {{ $client->name }}
         </p>
 
@@ -116,17 +102,14 @@
       @else
       </div>
       @endif
-
       @endforeach
     </div>
     @else
-    <p class="font-sans text-sm text-slate-400 italic">Belum ada klien terdaftar pada kategori ini.</p>
+    <p class="text-center font-sans text-slate-400 italic">Daftar klien akan segera ditampilkan.</p>
     @endif
 
   </div>
 </section>
-
-@endforeach
 
 {{-- TRUST STATEMENT --}}
 <section class="bg-navy-900 bg-blueprint py-16 lg:py-24">

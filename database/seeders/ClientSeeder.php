@@ -10,27 +10,28 @@ class ClientSeeder extends Seeder
 {
     public function run(): void
     {
-        // Klien nyata berdasarkan Company Profile KGP 2025.
+        // Klien — sesuai daftar "CLIENT KAMI" pada Company Profile KGP 2025.
+        // Ejaan mengikuti screenshot company profile; hanya "Nasiaonal" diperbaiki -> "Nasional".
         $clients = [
-            // Militer & keamanan
-            ['name' => 'Mabes TNI Angkatan Laut', 'category' => 'militer'],
-            ['name' => 'Sekolah Staf dan Komando TNI AL (Seskoal)', 'category' => 'militer'],
-            ['name' => 'Mako Korps Marinir', 'category' => 'militer'],
-            ['name' => 'Komando Lintas Laut Militer (Kolinlamil)', 'category' => 'militer'],
-            ['name' => 'Pusjianstra Mabes TNI', 'category' => 'militer'],
-            ['name' => 'ETLE Nasional – Polda Jawa Barat', 'category' => 'militer'],
-            // Pemerintahan
-            ['name' => 'Jakarta Smart City – Diskominfotik DKI Jakarta', 'category' => 'pemerintah'],
-            ['name' => 'Biro Hukum Setda Provinsi DKI Jakarta', 'category' => 'pemerintah'],
-            ['name' => 'Diklat Kementerian Perhubungan', 'category' => 'pemerintah'],
-            ['name' => 'Kementerian Ketenagakerjaan', 'category' => 'pemerintah'],
+            ['name' => 'Pujianstra Mabes TNI', 'category' => 'militer'],
+            ['name' => 'Sekolah Staff dan Komando TNI AL', 'category' => 'militer'],
+            ['name' => 'Komando Lintas Laut Militer', 'category' => 'militer'],
+            ['name' => 'Disinfolahtal Mabes AL', 'category' => 'militer'],
+            ['name' => 'Marinir AL', 'category' => 'militer'],
+            ['name' => 'ETLE Nasional', 'category' => 'militer'],
+            ['name' => 'Jakarta Smart City', 'category' => 'pemerintah'],
             ['name' => 'Berita Jakarta', 'category' => 'pemerintah'],
-            // BUMN
-            ['name' => 'PT Asabri (Persero)', 'category' => 'bumn'],
-            ['name' => 'PT Asuransi Jasa Indonesia (Jasindo)', 'category' => 'bumn'],
-            // Swasta
-            ['name' => 'PT Sinar Mas Group', 'category' => 'swasta'],
-            ['name' => 'PT Fujita Corporation', 'category' => 'swasta'],
+            ['name' => 'Dinas Kominfotik DKI Jakarta', 'category' => 'pemerintah'],
+            ['name' => 'Diklat Kementerian Perhubungan', 'category' => 'pemerintah'],
+            ['name' => 'Kementerian Tenaga Kerja', 'category' => 'pemerintah'],
+            ['name' => 'PT. Asabri (Kerawang - Jabar)', 'category' => 'bumn'],
+            ['name' => 'PT. Sinar Mas Group (Kandis - Riau)', 'category' => 'swasta'],
+            ['name' => 'Fujita Corporation', 'category' => 'swasta'],
+            ['name' => 'Crestron', 'category' => 'swasta'],
+            ['name' => 'JBL', 'category' => 'swasta'],
+            ['name' => 'Marshall', 'category' => 'swasta'],
+            ['name' => 'Unilumin', 'category' => 'swasta'],
+            ['name' => 'Electro Voice', 'category' => 'swasta'],
         ];
 
         foreach ($clients as $i => $client) {
