@@ -198,22 +198,9 @@
 @endforeach
 
 {{-- CTA --}}
-<section class="bg-navy-900 bg-brass-glow py-16 lg:py-24 reveal">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto text-center">
-      <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-300 mb-3">Mulai Proyek Anda</p>
-      <h2 class="font-display text-3xl sm:text-4xl text-white font-semibold mb-4">
-        Siap Mendiskusikan Kebutuhan Anda?
-      </h2>
-      <p class="text-navy-100 max-w-xl mx-auto mb-8 leading-relaxed">
-        Tim ahli kami siap membantu mewujudkan proyek IT, interior, konstruksi, atau sistem ME institusi Anda — sesuai standar, anggaran, dan tenggat waktu.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">Hubungi Kami</x-button>
-        <x-button as="a" href="{{ route('portfolio.index') }}" variant="light" size="lg">Lihat Portofolio</x-button>
-      </div>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="Mulai Proyek Anda"
+  title="Siap Mendiskusikan Kebutuhan Anda?"
+  body="Tim ahli kami siap membantu mewujudkan proyek IT, interior, konstruksi, atau sistem ME institusi Anda — sesuai standar, anggaran, dan tenggat waktu." />
 
 @endsection

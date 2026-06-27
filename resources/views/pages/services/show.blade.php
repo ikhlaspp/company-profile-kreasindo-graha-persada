@@ -194,20 +194,10 @@
 </section>
 
 {{-- CTA BAND --}}
-<section class="bg-navy-900 bg-brass-glow py-16 lg:py-20 reveal">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="font-display text-3xl sm:text-4xl text-white font-semibold mb-4">
-      Tertarik dengan Layanan Ini?
-    </h2>
-    <p class="text-navy-100 max-w-lg mx-auto mb-8 leading-relaxed font-sans">
-      Hubungi kami sekarang dan dapatkan konsultasi awal secara gratis. Bersama KGP, proyek Anda dikerjakan profesional dari awal hingga selesai.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">Konsultasi Gratis</x-button>
-      <x-button as="a" href="{{ route('services.index') }}" variant="light" size="lg">Layanan Lainnya</x-button>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="Mulai Proyek Anda"
+  title="Tertarik dengan Layanan Ini?"
+  body="Hubungi kami sekarang dan dapatkan konsultasi awal secara gratis. Bersama KGP, proyek Anda dikerjakan profesional dari awal hingga selesai." />
 
 {{-- BACK LINK (mobile) --}}
 <section class="bg-paper2 py-8 border-t border-line lg:hidden">

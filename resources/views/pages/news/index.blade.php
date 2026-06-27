@@ -231,21 +231,9 @@
 @endif
 
 {{-- CTA --}}
-<section class="bg-navy-900 bg-brass-glow py-16 lg:py-24 reveal">
-  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-    <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-300 mb-4">Hubungi Kami</p>
-    <h2 class="font-display text-3xl sm:text-4xl text-white font-semibold mb-5 leading-tight">
-      Ada Proyek yang Ingin Anda Diskusikan?
-    </h2>
-    <p class="text-navy-100 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-      Tim KGP siap membantu kebutuhan IT, interior, dan konstruksi institusi Anda
-      — dari konsultasi hingga penyelesaian proyek.
-    </p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">Konsultasi Gratis</x-button>
-      <x-button as="a" href="{{ route('services.index') }}" variant="outline" size="lg">Lihat Layanan Kami</x-button>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="Hubungi Kami"
+  title="Ada Proyek yang Ingin Anda Diskusikan?"
+  body="Tim KGP siap membantu kebutuhan IT, interior, dan konstruksi institusi Anda — dari konsultasi hingga penyelesaian proyek." />
 
 @endsection
