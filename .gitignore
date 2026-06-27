@@ -17,5 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+# Claude Code working files (planning, specs, analysis) — keep out of the repo
 /.claude
-/docs/superpowers
+/docs/
