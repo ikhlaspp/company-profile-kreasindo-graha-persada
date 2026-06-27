@@ -170,45 +170,153 @@ class PageController extends Controller
 
     /**
      * Display the 'About Us' page containing company profile, directors, and legalities.
+     * Rebuilt 2026-06-27: structured arrays from verbatim PDF spec (2026-06-19-tentang-kami-redesign.md).
      *
      * @return \Illuminate\View\View
      */
     public function about(): View
     {
-        $settings = Setting::whereIn('group', ['general', 'company'])->pluck('value', 'key');
+        // --- Profil Perusahaan (verbatim from spec) ---
+        $profile = [
+            'paragraph'     => 'PT. Kreasindo Graha Persada yang resmi didirikan pada tanggal 19 Oktober 2016, dalam usahanya bergerak dibidang Teknologi IT (Software, Hardware dan Network) dan Design Interior & Furniture (Interior Contractor, Design & Build). Dengan didukung tenaga-tenaga dan pelaksana yang berkualitas serta berpengalaman dalam menangani proyek, sehingga menghasilkan mutu dan kualitas pekerjaan yang memuaskan pihak pengguna jasa, menjadikan PT. Kreasindo Graha Persada mendapatkan kepercayaan 100% untuk mengerjakan sejumlah proyek yang lingkup pengerjaannya tersebar di seluruh wilayah di Indonesia.',
+            'badge'         => 'Berdiri sejak 2016',
+            'familyQuote'   => 'Kami selalu menganggap klien kami adalah bagian dari anggota keluarga, dimana kami selalu ingin memberikan yang terbaik bagi keluarga.',
+            'kataPengantar' => [
+                'Segenap Direksi PT. Kreasindo Graha Persada sebelumnya mengucapkan banyak terima kasih atas berkenannya Bapak/Ibu sekalian untuk tahu tentang kami. PT. Kreasindo Graha Persada adalah salah satu Perusahaan Swasta Nasional yang bergerak dibidang Teknologi IT (Software, Hardware dan Network) dan Design Interior & Furniture (Interior Contractor, Design & Build) yang memulai usahanya sejak tanggal 19 Oktober 2016 hingga sekarang.',
+                'Dengan didukung oleh personil yang handal dengan latar belakang pendidikan yang sesuai, sangat berpengalaman pada bidangnya serta dengan dedikasi dalam menangani pekerjaan-pekerjaan tersebut.',
+                'Perusahaan kami sangat memperhatikan kualitas dari hasil pekerjaan dan memberikan pelayanan yang sangat baik serta dengan metode kerja yang tepat dan selalu menerapkan system manajemen project yang tepat untuk penanganan proyek.',
+                'Kami selalu mengganggap klien kami adalah bagian dari anggota keluarga, dimana kami selalu ingin memberikan yang terbaik bagi keluarga.',
+                'Demikian prakata dari kami mudah-mudahan bisa menjadi gambaran tentang PT. Kreasindo Graha Persada, sehingga Bapak/Ibu sekalian akan mengenali dan memberikan perhatian terhadap perusahaan kami, atas kerjasamanya diucapkan terima kasih.',
+            ],
+            'signature' => 'Dewan Direksi, PT Kreasindo Graha Persada',
+        ];
 
-        $mission = collect(explode("\n", $settings['company_mission'] ?? ''))
-            ->map(fn (string $m) => trim($m))
-            ->filter()
-            ->values()
-            ->all();
+        // --- Visi (verbatim) ---
+        $visi = 'Menjadi perusahaan swasta nasional terdepan di industri Teknologi IT (Software, Hardware dan Network) dan Design Interior & Furniture (Interior Contractor, Design & Build), dengan memberikan layanan dan solusi terkini, terintegrasi, profesional yang terbaik serta bernilai tambah bagi Customer dan Stakeholder.';
 
-        $company = [
-            'name' => $settings['site_name'] ?? 'PT. Kreasindo Graha Persada',
-            'history' => $settings['company_history'] ?? 'Berdiri sejak tahun 2016, PT. Kreasindo Graha Persada telah berkembang menjadi perusahaan konsultan dan kontraktor yang dipercaya oleh berbagai instansi pemerintah, militer, dan swasta. Kami memulai perjalanan ini dengan semangat untuk memberikan solusi yang tepat guna dan bernilai tinggi bagi setiap klien kami.',
-            'vision' => $settings['company_vision'] ?? 'Menjadi perusahaan penyedia jasa IT dan Interior terdepan yang inovatif, profesional, dan memberikan dampak positif secara berkelanjutan.',
-            'mission' => $mission !== [] ? $mission : [
-                'Memberikan layanan berkualitas tinggi yang memenuhi standar industri.',
-                'Membangun hubungan jangka panjang yang saling menguntungkan dengan klien dan mitra.',
-                'Mendorong inovasi dalam setiap solusi teknologi dan desain yang ditawarkan.',
-                'Menjaga profesionalisme dan integritas dalam setiap proses bisnis.',
+        // --- Misi — 4 items (verbatim) ---
+        $misi = [
+            'Membangun kemitraan strategis dan bersinergi dengan klien maupun partner dengan prinsip saling menguntungkan.',
+            'Mengedepankan profesionalisme dan teamwork dalam menghasilkan layanan yang berkualitas.',
+            'Memberikan pelayanan jasa terbaik kepada setiap klien melalui solusi yang inovatif, efektif, dan efisien dalam bidang Teknologi Informasi.',
+            'Berperan sebagai prime mover (penggerak utama) bangkitnya industri Teknologi Informasi.',
+        ];
+
+        // --- Peranan & Komitmen — intro + 3 cards (verbatim) ---
+        $peranan = [
+            'intro' => 'Sebagai Perusahaan yang bergerak dibidang Teknologi IT (Software, Hardware dan Network) dan Design Interior & Furniture (Interior Contractor, Design & Build), pengerjaan serta pengendalian mutu produk merupakan prioritas paling utama untuk menjawab tantangan secara ekonomis serta efektif waktu.',
+            'cards' => [
+                [
+                    'title' => 'Tenaga Ahli Berpengalaman',
+                    'body'  => 'Didukung personil ahli dalam pengerjaan project pembangunan konstruksi sipil, interior & furniture, serta dukungan material yang diproduksi oleh grup perusahaan — cocok untuk pembangunan gedung perkantoran, pabrik, maupun perumahan.',
+                    'icon'  => 'users',
+                ],
+                [
+                    'title' => 'Kualitas Teruji',
+                    'body'  => 'Material dasar dan program kerja telah melewati hasil uji di Balai Struktur dan Konstruksi, Pusat Penelitian dan Pengembangan Permukiman, dan Badan Penelitian dengan hasil baik dan handal, dengan mutu yang bisa dipertanggungjawabkan.',
+                    'icon'  => 'badge-check',
+                ],
+                [
+                    'title' => '100% Komitmen',
+                    'body'  => 'Perusahaan kami sangat memperhatikan kualitas dari hasil pekerjaan dan memberikan pelayanan yang sangat baik serta dengan metode kerja yang tepat dan selalu menerapkan system manajemen project yang tepat untuk penanganan proyek.',
+                    'icon'  => 'star',
+                ],
             ],
         ];
 
-        $directors = [
-            ['name' => 'Razzif Eka Darma', 'position' => 'Direktur Utama', 'photo' => ''],
-            ['name' => 'Muhammad Rido', 'position' => 'Direktur Operasional', 'photo' => ''],
-            ['name' => 'Yoyon Setiawan', 'position' => 'Direktur Marketing', 'photo' => ''],
+        // --- Legalitas — 13 rows (verbatim numbers; linked to /dokumen) ---
+        // TODO: confirm both SBUJPK ME numbers with legal before go-live (see spec §Legalitas)
+        // TODO: possible missing PDF page 7 — check if additional legalitas docs exist
+        $legalitas = [
+            ['label' => 'SK Notaris',                 'number' => 'Rakhmat Musawwir Rasyidi, SH., MKn — No: 52-19.10, Tahun 2016'],
+            ['label' => 'KEP. MENKUMHAM RI',           'number' => 'No: AHU-0047336.AH.01.01, Tahun 2016'],
+            ['label' => 'Akta Perubahan (SK Notaris)', 'number' => 'Irma Bonita, SH — No: 60, 24 Juli 2020'],
+            ['label' => 'KEP. MENKUMHAM RI (Perubahan)','number' => 'No: AHU-0054675.AH.01.02, Tahun 2020'],
+            ['label' => 'NPWP',                        'number' => '80.457.164.4-403.000 — a.n. PT KREASINDO GRAHA PERSADA'],
+            ['label' => 'SP-PKP',                      'number' => 'S-698PKP/WPJ.33/KP.0703/2020'],
+            ['label' => 'NIB',                         'number' => '8120010232725'],
+            ['label' => 'SKDU',                        'number' => '503/019/2001/VI/2007'],
+            ['label' => 'SIUP',                        'number' => '510.41/028/03801/BPMTSP/2016'],
+            ['label' => 'SIUJK',                       'number' => '1-3201-2-00130-107572'],
+            ['label' => 'SBUJPK Gedung',               'number' => '0-3201-06-002-1-10-107572'],
+            ['label' => 'SBUJPK ME',                   'number' => '0-3201-09-153-1-10-107572'],  // TODO: confirm with legal (first SBUJPK ME)
+            ['label' => 'SBUJPK ME',                   'number' => '0-3201-08-153-1-10-107572'],  // TODO: confirm with legal (second SBUJPK ME)
         ];
 
-        $legalities = [
-            ['code' => 'SBU', 'label' => 'Sertifikat Badan Usaha'],
-            ['code' => 'SIUP', 'label' => 'Surat Izin Usaha Perdagangan'],
-            ['code' => 'SIUJK', 'label' => 'Surat Izin Usaha Jasa Konstruksi'],
-            ['code' => 'NIB', 'label' => 'Nomor Induk Berusaha'],
+        // --- Leadership — 2 cards (verbatim quotes) ---
+        // TODO: Yoyon vs Toyon — spec confirms "Yoyon Setiawan" (cross-check with HR/legal)
+        // TODO: replace placeholder photos with real branded portraits when available
+        $leadership = [
+            [
+                'name'     => 'Razzif Eka Darma',
+                'position' => 'Direktur Utama',
+                'quote'    => 'Ketika anda melakukan sesuatu dan gagal maka kegagalan itu bukan saja akan membuahkan kesuksesan, tetapi yang pasti kegagalan itu lebih berguna ketimbang anda tidak melakukan apapun.',
+                'photo'    => '',
+            ],
+            [
+                'name'     => 'Yoyon Setiawan',
+                'position' => 'Direktur Marketing',
+                'quote'    => 'Kemenangan dari sebuah kesuksesan sudah setengah dimenangkan ketika seseorang mencapai kebiasaan bekerja.',
+                'photo'    => '',
+            ],
         ];
 
-        return view('pages.about', compact('company', 'directors', 'legalities'));
+        // --- Org chart hierarchy (nested array — rendered in Blade as Tailwind boxes) ---
+        $orgChart = [
+            'name'     => 'Razzif Eka Darma',
+            'position' => 'Direktur Utama',
+            'children' => [
+                [
+                    'name'     => 'Muhammad Rido',
+                    'position' => 'Direktur Operasional',
+                    'children' => [
+                        [
+                            'name'     => 'Muhammad Teguh',
+                            'position' => 'Manager Operasional',
+                            'children' => [
+                                ['name' => 'Staff', 'position' => ''],
+                                ['name' => 'Staff', 'position' => ''],
+                                ['name' => 'Staff', 'position' => ''],
+                            ],
+                        ],
+                        [
+                            'name'     => 'Salahudin Syam',
+                            'position' => 'Manager Adm dan Keuangan',
+                            'children' => [
+                                ['name' => 'Staff', 'position' => ''],
+                                ['name' => 'Staff', 'position' => ''],
+                                ['name' => 'Staff', 'position' => ''],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'name'     => 'Yoyon Setiawan',
+                    'position' => 'Direktur Marketing',
+                    'children' => [
+                        [
+                            'name'     => 'Halvin',
+                            'position' => 'Manager Marketing',
+                            'children' => [
+                                ['name' => 'Staff', 'position' => ''],
+                                ['name' => 'Staff', 'position' => ''],
+                                ['name' => 'Staff', 'position' => ''],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        return view('pages.about', compact(
+            'profile',
+            'visi',
+            'misi',
+            'peranan',
+            'legalitas',
+            'leadership',
+            'orgChart',
+        ));
     }
 
     /**
