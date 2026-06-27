@@ -376,8 +376,8 @@
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Struktur &amp; Manajemen</h2>
     </div>
 
-    {{-- Leadership cards — 2 cards (Direktur Utama + Direktur Marketing per spec) --}}
-    <div class="reveal grid grid-cols-2 sm:grid-cols-2 gap-5 lg:gap-8 mb-12 max-w-3xl" style="transition-delay:80ms">
+    {{-- Leadership cards — 2 compact horizontal cards (Direktur Utama left, Direktur Marketing right) --}}
+    <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 mb-14" style="transition-delay:80ms">
       @foreach($leadership as $i => $leader)
       @php
         // Generate initials from name (up to 2 words)
@@ -385,44 +385,34 @@
         $initials = strtoupper(implode('', array_map(fn($w) => substr($w, 0, 1), array_slice($parts, 0, 2))));
       @endphp
       <div
-        class="bg-card border border-line rounded-sm shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group"
+        class="flex gap-5 bg-card border border-line rounded-sm shadow-sm hover:shadow-md transition-all duration-300 p-5 group"
         style="transition-delay:{{ $i * 120 }}ms"
       >
-        {{-- Photo / initials area — portrait 3:4 to hold a person photo --}}
-        <div class="relative aspect-[3/4] bg-gradient-to-br from-navy-700 to-navy-900 overflow-hidden">
+        {{-- Portrait photo / initials (compact, 3:4) --}}
+        <div class="relative w-28 flex-shrink-0 aspect-[3/4] rounded-sm bg-gradient-to-br from-navy-700 to-navy-900 overflow-hidden">
           @if(!empty($leader['photo']))
             {{-- TODO: replace with real branded portrait when available --}}
-            <img
-              src="{{ asset('storage/' . $leader['photo']) }}"
-              alt="{{ $leader['name'] }}"
-              class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-              loading="lazy">
-            <div class="absolute inset-0 bg-gradient-to-t from-navy-900/60 to-transparent"></div>
+            <img src="{{ asset('storage/' . $leader['photo']) }}" alt="{{ $leader['name'] }}"
+              class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy">
           @else
-            {{-- Placeholder: blueprint bg + initials --}}
             <div class="absolute inset-0 bg-blueprint opacity-25"></div>
             <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-20 h-20 rounded-full bg-navy-800 border-2 border-brass-500/50 flex items-center justify-center shadow-lg">
-                <span class="font-display text-3xl font-bold text-brass-300">{{ $initials }}</span>
-              </div>
+              <span class="font-display text-2xl font-bold text-brass-300">{{ $initials }}</span>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-navy-900/60 to-transparent"></div>
           @endif
-          {{-- brass corner --}}
-          <div class="absolute top-0 right-0 w-8 h-1 bg-brass-500" aria-hidden="true"></div>
-          <div class="absolute top-0 right-0 w-1 h-8 bg-brass-500" aria-hidden="true"></div>
+          <div class="absolute top-0 right-0 w-6 h-1 bg-brass-500" aria-hidden="true"></div>
+          <div class="absolute top-0 right-0 w-1 h-6 bg-brass-500" aria-hidden="true"></div>
         </div>
 
         {{-- Info --}}
-        <div class="p-6">
-          <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-1">
+        <div class="flex flex-col justify-center min-w-0">
+          <p class="font-sans text-[11px] font-semibold uppercase tracking-widest text-brass-700 mb-0.5">
             {{ $leader['position'] }}
           </p>
-          <h3 class="font-display text-xl font-semibold text-navy-800 mb-3">
+          <h3 class="font-display text-lg font-semibold text-navy-800 mb-2">
             {{ $leader['name'] }}
           </h3>
-          <div class="h-px w-10 bg-brass-500 mb-4"></div>
-          <blockquote class="font-sans text-sm italic text-slate-500 leading-relaxed border-l-2 border-line pl-3">
+          <blockquote class="font-sans text-xs italic text-slate-500 leading-relaxed border-l-2 border-brass-500/50 pl-3 line-clamp-4">
             &ldquo;{{ $leader['quote'] }}&rdquo;
           </blockquote>
         </div>
