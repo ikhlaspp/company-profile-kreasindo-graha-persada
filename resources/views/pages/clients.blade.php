@@ -102,30 +102,6 @@
   </div>
 </section>
 
-{{-- TRUST STATEMENT --}}
-<section class="bg-navy-900 bg-blueprint py-16 lg:py-24">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 reveal">
-    <div class="max-w-3xl mx-auto text-center">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-4">Bukti Kepercayaan</p>
-      <h2 class="font-display text-3xl lg:text-4xl font-semibold text-white mb-6 leading-snug">
-        Penghargaan dari TNI AL &amp; Rekam Jejak Nasional
-      </h2>
-      <p class="font-sans text-navy-100 text-lg leading-relaxed mb-8">
-        KGP telah menerima Penghargaan TNI AL Bidang Informasi (IT) dan Bukti Tanda Lulus Seskoal &amp; Kolinlamil —
-        bukti nyata komitmen kami melayani institusi strategis nasional dengan standar tertinggi.
-      </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">
-          Hubungi Kami
-        </x-button>
-        <x-button as="a" href="{{ route('documents') }}" variant="light" size="lg">
-          Lihat Legalitas
-        </x-button>
-      </div>
-    </div>
-  </div>
-</section>
-
 {{-- CLOSING CTA --}}
 <x-cta-band
   eyebrow="Bergabung Bersama Kami"
