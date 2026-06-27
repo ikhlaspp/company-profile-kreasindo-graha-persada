@@ -207,32 +207,37 @@
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Visi &amp; Misi</h2>
     </div>
 
-    {{-- VISION — centered hero statement, central to the section --}}
-    <div class="reveal relative bg-navy-800 rounded-sm overflow-hidden shadow-md px-6 py-12 lg:py-16 mb-10 text-center" style="transition-delay:80ms">
-      <div class="absolute inset-0 bg-blueprint opacity-20 pointer-events-none" aria-hidden="true"></div>
-      <div class="relative z-10 max-w-3xl mx-auto">
-        <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-5">Visi</p>
-        <span class="block font-display text-5xl text-brass-300/30 leading-none mb-2 select-none" aria-hidden="true">&ldquo;</span>
-        <blockquote class="font-display text-xl lg:text-2xl font-medium text-white leading-relaxed">
-          {{ $visi }}
-        </blockquote>
-        <div class="mt-8 mx-auto h-px w-14 bg-brass-500"></div>
-      </div>
-    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
 
-    {{-- MISSION — numbered grid below the vision --}}
-    <div class="reveal" style="transition-delay:160ms">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-6 text-center">Misi</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5">
-        @foreach($misi as $i => $item)
-        <div class="flex gap-4 bg-card border border-line rounded-sm p-5 lg:p-6 shadow-sm hover:shadow-md transition-shadow">
-          <span class="font-display font-bold text-brass-500 flex-shrink-0 text-3xl tabular leading-none">
-            {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}
-          </span>
-          <span class="font-sans text-base lg:text-lg text-slate-700 leading-relaxed">{{ $item }}</span>
-        </div>
-        @endforeach
+      {{-- VISION — large quote-style dark block --}}
+      <div class="reveal lg:col-span-2 relative bg-navy-800 rounded-sm p-8 lg:p-10 flex flex-col overflow-hidden shadow-md" style="transition-delay:80ms">
+        <div class="absolute top-4 right-6 font-display text-[120px] font-semibold text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">&ldquo;</div>
+
+        <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-6">Visi</p>
+
+        <blockquote class="font-display text-base lg:text-lg font-medium text-white leading-relaxed flex-1 relative z-10">
+          &ldquo;{{ $visi }}&rdquo;
+        </blockquote>
+
+        <div class="mt-8 h-px w-12 bg-brass-500"></div>
       </div>
+
+      {{-- MISSION — numbered list --}}
+      <div class="reveal lg:col-span-3 bg-card border border-line rounded-sm p-8 lg:p-10 shadow-sm" style="transition-delay:160ms">
+        <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-6">Misi</p>
+
+        <ol class="space-y-0 divide-y divide-line">
+          @foreach($misi as $i => $item)
+          <li class="flex gap-5 py-6 items-start">
+            <span class="font-display font-bold text-brass-500 flex-shrink-0 w-9 text-2xl tabular leading-snug">
+              {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}
+            </span>
+            <span class="font-sans text-base lg:text-lg text-slate-700 leading-relaxed">{{ $item }}</span>
+          </li>
+          @endforeach
+        </ol>
+      </div>
+
     </div>
   </div>
 </section>
