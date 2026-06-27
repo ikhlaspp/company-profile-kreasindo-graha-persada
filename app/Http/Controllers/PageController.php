@@ -295,7 +295,7 @@ class PageController extends Controller
                     'position' => 'Direktur Marketing',
                     'children' => [
                         [
-                            'name'     => 'Halvin',
+                            'name'     => 'Malvin',
                             'position' => 'Manager Marketing',
                             'children' => [
                                 ['name' => 'Staff', 'position' => ''],

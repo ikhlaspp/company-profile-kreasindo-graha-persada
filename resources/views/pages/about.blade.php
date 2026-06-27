@@ -430,82 +430,90 @@
       @endforeach
     </div>
 
-    {{-- ORG CHART (Tailwind-rendered boxes + connectors) --}}
+    {{-- ORG CHART — avatar tree styled after the company-profile "Struktur" page --}}
     <div class="reveal" style="transition-delay:160ms">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-8">Struktur Organisasi</p>
+      @php
+        // Reusable person-avatar markup for org-chart nodes.
+        $avatarBig = '<div class="w-16 h-16 rounded-full bg-navy-100 border-2 border-brass-500/50 flex items-center justify-center shadow-sm"><svg class="w-8 h-8 text-navy-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.69-8 6v1h16v-1c0-3.31-3.58-6-8-6z"/></svg></div>';
+        $avatarMid = '<div class="w-14 h-14 rounded-full bg-navy-100 border-2 border-brass-500/40 flex items-center justify-center shadow-sm"><svg class="w-7 h-7 text-navy-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.69-8 6v1h16v-1c0-3.31-3.58-6-8-6z"/></svg></div>';
+        $avatarSm  = '<div class="w-10 h-10 rounded-full bg-paper2 border border-line flex items-center justify-center"><svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.69-8 6v1h16v-1c0-3.31-3.58-6-8-6z"/></svg></div>';
+      @endphp
 
-      {{-- Wrapper: horizontal scroll on mobile --}}
+      {{-- Section heading --}}
+      <div class="flex items-center gap-4 mb-12">
+        <h3 class="font-display text-2xl lg:text-3xl font-semibold text-navy-900">Struktur Organisasi</h3>
+        <div class="h-1 w-20 bg-brass-500 rounded-full"></div>
+      </div>
+
       <div class="overflow-x-auto pb-4">
-        <div class="min-w-[680px]">
+        <div class="min-w-[820px] flex flex-col items-center">
 
-          {{-- LEVEL 1: Direktur Utama --}}
-          <div class="flex justify-center mb-0">
-            <div class="relative">
-              <div class="bg-navy-900 border border-brass-700/40 rounded-sm px-5 py-3 text-center shadow-md min-w-[160px]">
-                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-brass-300 mb-0.5">{{ $orgChart['position'] }}</p>
-                <p class="font-display text-sm font-semibold text-white">{{ $orgChart['name'] }}</p>
-              </div>
-              {{-- connector down --}}
-              <div class="absolute left-1/2 -translate-x-1/2 top-full w-px h-8 bg-line"></div>
-            </div>
+          {{-- LEVEL 1 — Direktur Utama --}}
+          <div class="flex flex-col items-center text-center w-44">
+            {!! $avatarBig !!}
+            <p class="mt-2.5 font-sans text-[11px] font-bold uppercase tracking-wide text-navy-900 leading-tight">{{ $orgChart['position'] }}</p>
+            <p class="font-sans text-[11px] text-brass-700 font-semibold leading-tight">{{ $orgChart['name'] }}</p>
           </div>
 
-          {{-- Horizontal connector bar at level-2 --}}
-          <div class="flex justify-center">
-            <div class="relative w-[440px] h-8 flex items-center justify-between">
-              {{-- horizontal line --}}
-              <div class="absolute left-[80px] right-[80px] top-0 h-px bg-line"></div>
-              {{-- left drop --}}
-              <div class="absolute left-[80px] top-0 w-px h-8 bg-line"></div>
-              {{-- right drop --}}
-              <div class="absolute right-[80px] top-0 w-px h-8 bg-line"></div>
-            </div>
+          {{-- connector: down from Dirut, then split to the two directors --}}
+          <div class="h-8 border-l border-dashed border-brass-500/50"></div>
+          <div class="relative w-[520px] h-8">
+            <div class="absolute top-0 border-t border-dashed border-brass-500/50" style="left:130px; right:130px;"></div>
+            <div class="absolute left-[130px] top-0 h-8 border-l border-dashed border-brass-500/50"></div>
+            <div class="absolute right-[130px] top-0 h-8 border-l border-dashed border-brass-500/50"></div>
           </div>
 
-          {{-- LEVEL 2: Direktur Operasional + Direktur Marketing --}}
-          <div class="flex justify-between gap-4 mb-0 px-10">
+          {{-- LEVEL 2+ — one column per director --}}
+          <div class="flex justify-center gap-16">
             @foreach($orgChart['children'] as $dir)
-            <div class="relative flex-1 flex flex-col items-center">
-              <div class="bg-navy-800 border border-navy-700 rounded-sm px-4 py-3 text-center shadow-sm min-w-[140px] w-full max-w-[200px]">
-                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-brass-300 mb-0.5">{{ $dir['position'] }}</p>
-                <p class="font-display text-sm font-semibold text-white">{{ $dir['name'] }}</p>
+            @php $mgrCount = count($dir['children']); @endphp
+            <div class="flex flex-col items-center">
+
+              {{-- Director node --}}
+              <div class="flex flex-col items-center text-center w-44">
+                {!! $avatarBig !!}
+                <p class="mt-2.5 font-sans text-[11px] font-bold uppercase tracking-wide text-navy-900 leading-tight">{{ $dir['position'] }}</p>
+                <p class="font-sans text-[11px] text-brass-700 font-semibold leading-tight">{{ $dir['name'] }}</p>
               </div>
-              {{-- connector down --}}
-              <div class="w-px bg-line flex-1 min-h-[2rem]"></div>
 
-              {{-- Horizontal connector for managers under this director --}}
-              @if(count($dir['children']) > 1)
-              <div class="relative w-full h-0">
-                <div class="absolute left-1/4 right-1/4 top-0 h-px bg-line"></div>
-              </div>
-              @endif
-            </div>
-            @endforeach
-          </div>
+              {{-- connector down to manager row --}}
+              <div class="h-8 border-l border-dashed border-brass-500/40"></div>
 
-          {{-- LEVEL 3: Managers --}}
-          <div class="flex justify-between gap-4 px-10 mb-0">
-            @foreach($orgChart['children'] as $dirIdx => $dir)
-            <div class="flex-1 flex {{ count($dir['children']) > 1 ? 'gap-3 justify-between' : 'justify-center' }}">
-              @foreach($dir['children'] as $mgr)
-              <div class="flex flex-col items-center flex-1 max-w-[180px]">
-                <div class="bg-navy-100 border border-navy-200 rounded-sm px-4 py-2.5 text-center w-full">
-                  <p class="font-sans text-[10px] font-semibold uppercase tracking-wide text-navy-600 mb-0.5">{{ $mgr['position'] }}</p>
-                  <p class="font-sans text-sm font-semibold text-navy-900">{{ $mgr['name'] }}</p>
-                </div>
-                {{-- connector down --}}
-                <div class="w-px h-6 bg-line"></div>
-
-                {{-- LEVEL 4: Staff (3 generic boxes) --}}
-                <div class="flex gap-1.5 justify-center">
-                  @foreach($mgr['children'] as $staff)
-                  <div class="bg-paper2 border border-line rounded-sm px-2 py-1.5 text-center">
-                    <p class="font-sans text-[10px] text-slate-400">Staff</p>
+              {{-- Manager row (with horizontal bar when >1 manager) --}}
+              <div class="relative flex justify-center gap-6">
+                @if($mgrCount > 1)
+                <div class="absolute top-0 border-t border-dashed border-brass-500/40" style="left:84px; right:84px;"></div>
+                @endif
+                @foreach($dir['children'] as $mgr)
+                <div class="flex flex-col items-center w-40">
+                  @if($mgrCount > 1)
+                  <div class="h-6 border-l border-dashed border-brass-500/40"></div>
+                  @endif
+                  <div class="flex flex-col items-center text-center">
+                    {!! $avatarMid !!}
+                    <p class="mt-2 font-sans text-[10px] font-bold uppercase tracking-wide text-navy-800 leading-tight">{{ $mgr['position'] }}</p>
+                    <p class="font-sans text-[10px] text-brass-700 font-semibold leading-tight">{{ $mgr['name'] }}</p>
                   </div>
-                  @endforeach
+
+                  {{-- connector down to staff --}}
+                  <div class="h-6 border-l border-dashed border-brass-500/30"></div>
+                  <div class="relative w-full h-4">
+                    <div class="absolute top-0 border-t border-dashed border-brass-500/30" style="left:24px; right:24px;"></div>
+                  </div>
+
+                  {{-- Staff row (x3) --}}
+                  <div class="flex justify-center gap-3 -mt-px">
+                    @foreach($mgr['children'] as $staff)
+                    <div class="flex flex-col items-center">
+                      <div class="h-4 border-l border-dashed border-brass-500/30"></div>
+                      {!! $avatarSm !!}
+                      <p class="mt-1 font-sans text-[9px] font-semibold uppercase tracking-wide text-slate-400">Staff</p>
+                    </div>
+                    @endforeach
+                  </div>
                 </div>
+                @endforeach
               </div>
-              @endforeach
             </div>
             @endforeach
           </div>
