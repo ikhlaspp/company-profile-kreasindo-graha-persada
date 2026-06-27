@@ -207,27 +207,9 @@
 </section>
 
 {{-- CTA --}}
-<section class="bg-paper2 py-16">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 reveal">
-    <div class="bg-card border border-line rounded-sm shadow-sm px-8 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
-      <div>
-        <h3 class="font-display text-xl lg:text-2xl font-semibold text-navy-900 mb-2">
-          Tertarik Mengerjakan Proyek Bersama Kami?
-        </h3>
-        <p class="font-sans text-slate-500 max-w-lg">
-          Hubungi tim KGP untuk diskusi kebutuhan IT, interior, atau konstruksi Anda.
-        </p>
-      </div>
-      <div class="flex-shrink-0 flex gap-3">
-        <x-button as="a" href="{{ route('gallery.index') }}" variant="outline" size="md">
-          Galeri Lainnya
-        </x-button>
-        <x-button as="a" href="{{ route('contact') }}" variant="accent" size="md">
-          Hubungi Kami
-        </x-button>
-      </div>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="Mari Berkolaborasi"
+  title="Tertarik Mengerjakan Proyek Bersama Kami?"
+  body="Hubungi tim KGP untuk diskusi kebutuhan IT, interior, atau konstruksi Anda." />
 
 @endsection

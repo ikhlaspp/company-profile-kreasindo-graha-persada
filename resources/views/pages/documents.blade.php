@@ -306,27 +306,9 @@
 @endif
 
 {{-- CLOSING CTA --}}
-<section class="relative bg-navy-900 py-20 overflow-hidden">
-  <div class="absolute inset-0 bg-blueprint opacity-40"></div>
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-    <div class="reveal">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-3">Bantuan Lebih Lanjut</p>
-      <h2 class="font-display text-3xl lg:text-4xl font-semibold text-white mb-4">
-        Membutuhkan Dokumen Asli?
-      </h2>
-      <p class="font-sans text-base text-navy-100 max-w-xl mx-auto mb-8 leading-relaxed">
-        Untuk keperluan tender, kemitraan, atau <em>due-diligence</em> formal, tim legal kami siap menyediakan dokumen asli bermaterai sesuai kebutuhan Anda.
-      </p>
-      <div class="flex flex-wrap gap-4 justify-center">
-        <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">
-          Hubungi Tim Legal
-        </x-button>
-        <x-button as="a" href="{{ route('about') }}" variant="light" size="lg">
-          Tentang Perusahaan
-        </x-button>
-      </div>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="Bantuan Lebih Lanjut"
+  title="Membutuhkan Dokumen Asli?"
+  body="Untuk keperluan tender, kemitraan, atau due-diligence formal, tim legal kami siap menyediakan dokumen asli bermaterai sesuai kebutuhan Anda." />
 
 @endsection

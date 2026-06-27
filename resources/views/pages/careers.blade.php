@@ -274,29 +274,9 @@
 </section>
 
 {{-- SPONTANEOUS CV CTA BAND --}}
-<section class="relative bg-navy-900 py-20 overflow-hidden">
-  <div class="absolute inset-0 bg-blueprint opacity-40"></div>
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="reveal flex flex-col lg:flex-row items-center justify-between gap-10">
-      <div class="text-center lg:text-left max-w-xl">
-        <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-2">CV Spontan</p>
-        <h2 class="font-display text-2xl lg:text-3xl font-semibold text-white mb-3">
-          Tidak Menemukan Posisi yang Cocok?
-        </h2>
-        <p class="font-sans text-base text-navy-100 leading-relaxed">
-          Kirimkan CV terbaikmu dan kami akan menghubungi kembali bila ada posisi yang sesuai dengan profil Anda. Talenta terbaik selalu kami sambut.
-        </p>
-      </div>
-      <div class="flex-shrink-0 flex flex-col sm:flex-row gap-4">
-        <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">
-          Kirim CV Spontan
-        </x-button>
-        <x-button as="a" href="{{ route('about') }}" variant="light" size="lg">
-          Tentang KGP
-        </x-button>
-      </div>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="CV Spontan"
+  title="Tidak Menemukan Posisi yang Cocok?"
+  body="Kirimkan CV terbaikmu dan kami akan menghubungi kembali bila ada posisi yang sesuai dengan profil Anda. Talenta terbaik selalu kami sambut." />
 
 @endsection

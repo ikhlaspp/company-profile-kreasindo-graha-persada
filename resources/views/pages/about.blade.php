@@ -516,28 +516,9 @@
 {{-- ============================================================
      CLOSING CTA
      ============================================================ --}}
-<section class="bg-navy-900 bg-blueprint py-16 lg:py-20">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="reveal max-w-2xl mx-auto text-center">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-4">
-        Siap Berkolaborasi?
-      </p>
-      <h2 class="font-display text-3xl lg:text-4xl font-semibold text-white mb-5 leading-tight">
-        Wujudkan Proyek Anda Bersama KGP
-      </h2>
-      <p class="font-sans text-navy-100 leading-relaxed mb-8">
-        Tim kami siap mendampingi dari konsultasi awal hingga serah terima proyek. Hubungi kami sekarang dan mulailah perjalanan kerja sama yang saling menguntungkan.
-      </p>
-      <div class="flex flex-wrap gap-3 justify-center">
-        <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">
-          Hubungi Kami Sekarang
-        </x-button>
-        <x-button as="a" href="{{ route('services.index') }}" variant="outline" size="lg">
-          Lihat Layanan
-        </x-button>
-      </div>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="Siap Berkolaborasi?"
+  title="Wujudkan Proyek Anda Bersama KGP"
+  body="Tim kami siap mendampingi dari konsultasi awal hingga serah terima proyek. Hubungi kami sekarang dan mulailah perjalanan kerja sama yang saling menguntungkan." />
 
 @endsection

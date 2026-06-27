@@ -127,24 +127,9 @@
 </section>
 
 {{-- CLOSING CTA --}}
-<section class="bg-paper2 py-16">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 reveal">
-    <div class="bg-card border border-line rounded-sm shadow-sm px-8 py-10 flex flex-col lg:flex-row items-center justify-between gap-6">
-      <div>
-        <h3 class="font-display text-xl lg:text-2xl font-semibold text-navy-900 mb-2">
-          Bergabunglah dengan Klien Kami
-        </h3>
-        <p class="font-sans text-slate-500 max-w-lg">
-          Diskusikan kebutuhan IT, interior, konstruksi, atau ME institusi Anda bersama tim profesional kami.
-        </p>
-      </div>
-      <div class="flex-shrink-0">
-        <x-button as="a" href="{{ route('contact') }}" variant="accent" size="lg">
-          Mulai Diskusi
-        </x-button>
-      </div>
-    </div>
-  </div>
-</section>
+<x-cta-band
+  eyebrow="Bergabung Bersama Kami"
+  title="Bergabunglah dengan Klien Kami"
+  body="Diskusikan kebutuhan IT, interior, konstruksi, atau ME institusi Anda bersama tim profesional kami." />
 
 @endsection
