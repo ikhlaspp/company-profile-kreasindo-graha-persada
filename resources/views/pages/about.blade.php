@@ -215,7 +215,7 @@
 
         <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-6">Visi</p>
 
-        <blockquote class="font-display text-xl lg:text-2xl font-medium text-white leading-relaxed flex-1 relative z-10">
+        <blockquote class="font-display text-base lg:text-lg font-medium text-white leading-relaxed flex-1 relative z-10">
           &ldquo;{{ $visi }}&rdquo;
         </blockquote>
 
@@ -228,11 +228,11 @@
 
         <ol class="space-y-0 divide-y divide-line">
           @foreach($misi as $i => $item)
-          <li class="flex gap-5 py-5 items-start">
-            <span class="font-display font-bold text-brass-700 flex-shrink-0 w-7 text-base tabular leading-relaxed">
-              {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}.
+          <li class="flex gap-5 py-6 items-start">
+            <span class="font-display font-bold text-brass-500 flex-shrink-0 w-9 text-2xl tabular leading-snug">
+              {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}
             </span>
-            <span class="font-sans text-sm text-slate-700 leading-relaxed">{{ $item }}</span>
+            <span class="font-sans text-base lg:text-lg text-slate-700 leading-relaxed">{{ $item }}</span>
           </li>
           @endforeach
         </ol>
