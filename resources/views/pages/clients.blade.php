@@ -19,23 +19,23 @@
       Klien Kami
     </h1>
     <p class="font-sans text-lg text-navy-100 max-w-2xl leading-relaxed">
-      Dipercaya oleh instansi pemerintah, TNI/Polri, BUMN, dan korporasi nasional
-      untuk solusi IT, interior, sipil, dan mekanikal &amp; elektrikal di seluruh Indonesia.
+      Kami berkesempatan melayani berbagai instansi pemerintah, TNI/Polri, BUMN, universitas,
+      dan korporasi nasional di seluruh Indonesia.
     </p>
 
     {{-- Trust stats --}}
     <div class="mt-10 flex flex-wrap gap-6 lg:gap-12">
       <div>
+        <p class="font-display text-3xl font-semibold text-brass-300 tabular">{{ collect($clients)->flatten(1)->count() }}+</p>
+        <p class="font-sans text-xs text-navy-100 mt-1 uppercase tracking-widest">Klien &amp; Mitra</p>
+      </div>
+      <div>
         <p class="font-display text-3xl font-semibold text-brass-300 tabular">10+</p>
         <p class="font-sans text-xs text-navy-100 mt-1 uppercase tracking-widest">Tahun Pengalaman</p>
       </div>
       <div>
-        <p class="font-display text-3xl font-semibold text-brass-300 tabular">{{ count($categories) }}+</p>
-        <p class="font-sans text-xs text-navy-100 mt-1 uppercase tracking-widest">Kategori Klien</p>
-      </div>
-      <div>
-        <p class="font-display text-3xl font-semibold text-brass-300 tabular">TNI/Polri</p>
-        <p class="font-sans text-xs text-navy-100 mt-1 uppercase tracking-widest">Penghargaan Militer</p>
+        <p class="font-display text-3xl font-semibold text-brass-300 tabular">Nasional</p>
+        <p class="font-sans text-xs text-navy-100 mt-1 uppercase tracking-widest">Jangkauan Layanan</p>
       </div>
     </div>
   </div>
@@ -56,15 +56,6 @@
 
 <section class="bg-paper py-16 lg:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-    <div class="text-center max-w-2xl mx-auto mb-14 reveal">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-3">Klien Kami</p>
-      <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900 mb-4">Dipercaya Instansi Terkemuka</h2>
-      <p class="font-sans text-slate-500 leading-relaxed">
-        Kami berkesempatan melayani berbagai instansi pemerintah, TNI/Polri, BUMN, universitas,
-        dan korporasi nasional di seluruh Indonesia.
-      </p>
-    </div>
 
     @if($allClients->isNotEmpty())
     <div class="reveal grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-12">
