@@ -20,3 +20,5 @@ yarn-error.log
 # Claude Code working files (planning, specs, analysis) — keep out of the repo
 /.claude
 /docs/
+CLAUDE.md
+.claude/
