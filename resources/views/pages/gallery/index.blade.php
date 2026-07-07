@@ -46,56 +46,34 @@
     {{-- Album grid --}}
     @forelse($galleries as $gallery)
     @if($loop->first)
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 reveal">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 reveal">
     @endif
 
+      {{-- Image-forward tile: minimal text; on hover the bottom blurs and the title fades in --}}
       <a href="{{ route('gallery.show', $gallery->slug) }}"
-         class="group block bg-card border border-line rounded-sm shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 overflow-hidden"
-         style="transition-delay: {{ ($loop->index % 4) * 80 }}ms">
+         class="group relative block aspect-[16/10] overflow-hidden rounded-sm bg-gradient-to-br from-navy-700 to-navy-900 shadow-sm"
+         style="transition-delay: {{ ($loop->index % 3) * 80 }}ms"
+         aria-label="{{ $gallery->title }}">
 
         {{-- Cover image --}}
-        <div class="aspect-[4/3] overflow-hidden relative bg-gradient-to-br from-navy-700 to-navy-900">
-          @if($gallery->cover_image)
-            <img src="{{ kgp_image($gallery->cover_image, 'gallery-'.$gallery->id, 800, 600) }}"
-                 alt="{{ $gallery->title }}"
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          @else
-            <div class="w-full h-full flex items-center justify-center">
-              <svg class="w-14 h-14 text-navy-100/20" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 20.25h18A2.25 2.25 0 0023.25 18V6A2.25 2.25 0 0021 3.75H3A2.25 2.25 0 00.75 6v12A2.25 2.25 0 003 20.25z"/>
-              </svg>
-            </div>
-          @endif
-
-          {{-- Division badge --}}
-          @php
-            $divLabels = ['it' => 'IT', 'interior' => 'Interior', 'sipil' => 'Sipil', 'event' => 'Event'];
-            $divLabel = $divLabels[$gallery->division] ?? ucfirst($gallery->division);
-          @endphp
-          <span class="absolute top-3 left-3 px-2.5 py-1 rounded text-xs font-sans font-semibold bg-navy-900/85 text-brass-300 backdrop-blur-sm border border-brass-700/30">
-            {{ $divLabel }}
-          </span>
-
-          {{-- Photo count overlay --}}
-          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-navy-900/80 via-navy-900/20 to-transparent p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-            <div class="flex items-center gap-1.5 text-white">
-              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909"/>
-              </svg>
-              <span class="font-sans text-sm font-semibold">Lihat {{ $gallery->photos_count }} Foto</span>
-            </div>
+        @if($gallery->cover_image)
+          <img src="{{ kgp_image($gallery->cover_image, 'gallery-'.$gallery->id, 900, 600) }}"
+               alt="{{ $gallery->title }}"
+               class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+        @else
+          <div class="absolute inset-0 flex items-center justify-center">
+            <svg class="w-14 h-14 text-navy-100/20" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 20.25h18A2.25 2.25 0 0023.25 18V6A2.25 2.25 0 0021 3.75H3A2.25 2.25 0 00.75 6v12A2.25 2.25 0 003 20.25z"/>
+            </svg>
           </div>
-        </div>
+        @endif
 
-        {{-- Card body --}}
-        <div class="p-5">
-          <h3 class="font-display text-navy-800 font-semibold text-base leading-snug mb-1.5 group-hover:text-navy-600 transition-colors">
-            {{ $gallery->title }}
-          </h3>
-          <div class="flex items-center gap-3 text-xs font-sans text-slate-400">
-            <span>{{ $gallery->photos_count }} Foto</span>
-            <span class="w-1 h-1 rounded-full bg-slate-300"></span>
-            <span>Divisi {{ $divLabel }}</span>
+        {{-- Hover reveal: bottom of the image blurs a little + title fades in --}}
+        <div class="absolute bottom-0 inset-x-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div class="backdrop-blur-sm bg-gradient-to-t from-navy-900/80 via-navy-900/35 to-transparent px-5 pt-12 pb-4">
+            <h3 class="font-display text-white text-base sm:text-lg font-medium leading-snug translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+              {{ $gallery->title }}
+            </h3>
           </div>
         </div>
       </a>
