@@ -6,55 +6,38 @@ use Illuminate\Support\Facades\Http;
 use Throwable;
 
 /**
- * Client for xAI Grok (OpenAI-compatible chat completions) API integration.
- *
- * Serves as the fallback AI layer when Gemini fails or exhausts its quota.
- * Throws ChatbotException on any failure to signal the orchestrator to provide
- * a static fallback message.
+ * Klien untuk semua provider ber-format OpenAI (endpoint /chat/completions).
+ * Satu class ini melayani Grok, OpenAI/ChatGPT, DeepSeek, Groq, Together, dll —
+ * yang membedakan hanya endpoint, model, dan API key dari config.
  */
-class GrokClient
+class OpenAiCompatibleClient implements AiProvider
 {
-    /**
-     * GrokClient constructor.
-     *
-     * @param string|null $apiKey
-     * @param string $model
-     * @param string $endpoint
-     * @param int $timeout
-     */
     public function __construct(
+        private readonly string $name,
         private readonly ?string $apiKey,
         private readonly string $model,
         private readonly string $endpoint,
         private readonly int $timeout,
     ) {}
 
-    /**
-     * Checks if the client is properly configured with an API key.
-     *
-     * @return bool
-     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
     public function configured(): bool
     {
         return ! empty($this->apiKey);
     }
 
-    /**
-     * Sends a message to the Grok API and retrieves the response.
-     *
-     * @param string $message The current user message.
-     * @param string $systemPrompt The grounding context for the AI.
-     * @param array<int, array{user: string, bot: string}> $history Previous conversation exchanges.
-     * @return string The generated response.
-     *
-     * @throws ChatbotException
-     */
     public function reply(string $message, string $systemPrompt, array $history = []): string
     {
+        // Provider tanpa API key dianggap tidak siap dan dilempar agar dilewati engine.
         if (! $this->configured()) {
-            throw new ChatbotException('Grok API key is not configured.');
+            throw new ChatbotException("[{$this->name}] API key belum dikonfigurasi.");
         }
 
+        // Susun percakapan: system prompt, lalu riwayat, lalu pesan terbaru.
         $messages = [['role' => 'system', 'content' => $systemPrompt]];
 
         foreach ($history as $exchange) {
@@ -64,6 +47,7 @@ class GrokClient
 
         $messages[] = ['role' => 'user', 'content' => $message];
 
+        // Panggil API dengan retry ringan; error jaringan dibungkus jadi ChatbotException.
         try {
             $response = Http::timeout($this->timeout)
                 ->retry(2, 200, throw: false)
@@ -75,17 +59,18 @@ class GrokClient
                     'messages' => $messages,
                 ]);
         } catch (Throwable $e) {
-            throw new ChatbotException('Grok request failed: '.$e->getMessage(), 0, $e);
+            throw new ChatbotException("[{$this->name}] request gagal: ".$e->getMessage(), 0, $e);
         }
 
+        // Validasi respons: status HTTP dan isi balasan harus valid.
         if ($response->failed()) {
-            throw new ChatbotException("Grok returned HTTP status {$response->status()}.");
+            throw new ChatbotException("[{$this->name}] mengembalikan HTTP {$response->status()}.");
         }
 
         $text = $response->json('choices.0.message.content');
 
         if (! is_string($text) || trim($text) === '') {
-            throw new ChatbotException('Grok returned an empty response.');
+            throw new ChatbotException("[{$this->name}] mengembalikan respons kosong.");
         }
 
         return trim($text);

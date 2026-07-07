@@ -8,57 +8,34 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
- * Orchestrates the 3-layer hybrid chatbot.
- *
- * Layers:
- * 1. FAQ database (instant, no API)
- * 2. Gemini 2.5 Flash (grounded with KGP context)
- * 3. Grok (fallback when Gemini fails or exhausts quota)
- *
- * Falls back to a friendly static message when every layer fails, and logs
- * every exchange to chat_conversations and chat_logs tables.
+ * Otak chatbot hybrid KGP.
+ * Alur menjawab: FAQ dulu, lalu daftar provider AI sesuai urutan config,
+ * dan jika semua gagal, pakai balasan fallback statis.
  */
 class ChatbotEngine
 {
-    /**
-     * @var string
-     */
     private const FALLBACK_REPLY = 'Maaf, saya belum dapat menjawab pertanyaan itu sekarang. '
         .'Silakan hubungi tim kami melalui halaman Kontak (/kontak) agar dapat dibantu lebih lanjut.';
 
     /**
-     * ChatbotEngine constructor.
-     *
-     * @param FaqMatcher $faqMatcher
-     * @param GeminiClient $gemini
-     * @param GrokClient $grok
-     * @param KgpContext $context
+     * @param array<int, AiProvider> $providers Rantai AI terurut, dijalankan setelah FAQ.
      */
     public function __construct(
         private readonly FaqMatcher $faqMatcher,
-        private readonly GeminiClient $gemini,
-        private readonly GrokClient $grok,
         private readonly KgpContext $context,
+        private readonly array $providers,
     ) {}
 
-    /**
-     * Resolves the conversation, processes the message through the AI layers,
-     * logs the interaction, and returns the appropriate reply.
-     *
-     * @param string $message
-     * @param string $sessionId
-     * @param string|null $ip
-     * @param string|null $userAgent
-     * @return array{reply: string, source: string}
-     */
     public function handle(string $message, string $sessionId, ?string $ip = null, ?string $userAgent = null): array
     {
+        // Pastikan percakapan tercatat, lalu ambil jawaban sambil menghitung waktu respons.
         $conversation = $this->resolveConversation($sessionId, $ip, $userAgent);
 
         $start = microtime(true);
         [$reply, $source, $faqId] = $this->answer($message, $this->history($conversation));
         $elapsedMs = (int) round((microtime(true) - $start) * 1000);
 
+        // Simpan log untuk analitik dan riwayat percakapan.
         ChatLog::create([
             'chat_conversation_id' => $conversation->id,
             'faq_id' => $faqId,
@@ -72,44 +49,44 @@ class ChatbotEngine
     }
 
     /**
-     * Runs the message through the three layers sequentially.
-     *
-     * @param string $message
      * @param array<int, array{user: string, bot: string}> $history
      * @return array{0: string, 1: string, 2: int|null} [reply, source, faqId]
      */
     private function answer(string $message, array $history = []): array
     {
+        // Lapisan 1 — FAQ database: paling cepat dan tanpa biaya API.
         if ($faq = $this->faqMatcher->match($message)) {
             $faq->increment('hit_count');
 
             return [$faq->answer, 'faq', $faq->id];
         }
 
+        // Lapisan 2..n — coba tiap provider AI sesuai urutan; lewati yang belum dikonfigurasi.
         $systemPrompt = $this->context->systemPrompt();
 
-        try {
-            return [$this->gemini->reply($message, $systemPrompt, $history), 'gemini', null];
-        } catch (ChatbotException $e) {
-            Log::info('Chatbot: Gemini API failed, attempting Grok fallback.', ['error' => $e->getMessage()]);
+        foreach ($this->providers as $provider) {
+            if (! $provider->configured()) {
+                continue;
+            }
+
+            try {
+                return [$provider->reply($message, $systemPrompt, $history), $provider->name(), null];
+            } catch (ChatbotException $e) {
+                Log::info("Chatbot: provider [{$provider->name()}] gagal, lanjut ke berikutnya.", [
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
-        try {
-            return [$this->grok->reply($message, $systemPrompt, $history), 'grok', null];
-        } catch (ChatbotException $e) {
-            Log::warning('Chatbot: All AI layers failed.', ['error' => $e->getMessage()]);
-        }
+        // Lapisan terakhir — semua AI gagal atau kosong, pakai balasan aman.
+        Log::warning('Chatbot: semua lapisan AI gagal atau belum dikonfigurasi.');
 
         return [self::FALLBACK_REPLY, 'fallback', null];
     }
 
     /**
-     * Retrieves recent exchanges in the conversation.
+     * Ambil beberapa percakapan terakhir sebagai konteks, kecuali balasan fallback.
      *
-     * Returns the oldest first, allowing AI layers to follow follow-up questions.
-     * Fallback replies are skipped as they hold no informational value.
-     *
-     * @param ChatConversation $conversation
      * @return array<int, array{user: string, bot: string}>
      */
     private function history(ChatConversation $conversation): array
@@ -129,16 +106,9 @@ class ChatbotEngine
             ->all();
     }
 
-    /**
-     * Resolves an existing conversation or creates a new one based on the session ID.
-     *
-     * @param string $sessionId
-     * @param string|null $ip
-     * @param string|null $userAgent
-     * @return ChatConversation
-     */
     private function resolveConversation(string $sessionId, ?string $ip, ?string $userAgent): ChatConversation
     {
+        // Buat percakapan baru bila sesi belum ada, lalu selalu perbarui waktu aktivitas.
         $conversation = ChatConversation::firstOrNew(['session_id' => $sessionId]);
 
         if (! $conversation->exists) {
