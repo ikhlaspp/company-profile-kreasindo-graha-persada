@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Client;
 use App\Models\Project;
-use App\Models\Service;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -12,34 +11,71 @@ class ProjectSeeder extends Seeder
 {
     public function run(): void
     {
-        $clients = Client::pluck('id')->all();
-        $services = Service::pluck('id')->all();
-        $divisions = ['it', 'interior', 'sipil'];
-        $locations = ['Jakarta', 'Bandung', 'Surabaya', 'Bekasi', 'Bogor', 'Semarang'];
+        // 5 proyek unggulan nyata (Company Profile KGP 2025).
+        $projects = [
+            [
+                'title' => 'Pengembangan Sistem Informasi Seskoal',
+                'division' => 'it',
+                'client' => 'Sekolah Staff dan Komando TNI AL',
+                'contract_value' => 4_900_000_000,
+                'year' => 2017,
+                'location' => 'Jakarta',
+                'description' => "Pengembangan sistem informasi terintegrasi untuk Sekolah Staf dan Komando TNI Angkatan Laut (Seskoal). Mencakup analisis kebutuhan, perancangan basis data, pengembangan aplikasi, hingga pelatihan pengguna dengan standar keamanan institusi militer.",
+            ],
+            [
+                'title' => 'Pengembangan Website TNI Angkatan Laut',
+                'division' => 'it',
+                'client' => 'Disinfolahtal Mabes AL',
+                'contract_value' => 4_339_238_800,
+                'year' => 2019,
+                'location' => 'Jakarta',
+                'description' => "Pengembangan dan peremajaan website resmi TNI Angkatan Laut beserta sarana kerja pendukungnya. Proyek mencakup pembaruan infrastruktur, desain antarmuka, serta integrasi konten untuk kebutuhan informasi publik institusi.",
+            ],
+            [
+                'title' => 'Pembangunan Sistem Informasi Marinir',
+                'division' => 'it',
+                'client' => 'Marinir AL',
+                'contract_value' => 2_439_220_000,
+                'year' => 2018,
+                'location' => 'Jakarta',
+                'description' => "Pembangunan sistem informasi untuk Markas Komando Korps Marinir. Solusi dirancang untuk menunjang administrasi dan pengelolaan data internal secara efisien, aman, dan terintegrasi.",
+            ],
+            [
+                'title' => 'Renovasi Lobby Gedung Kantor Sinar Mas Group',
+                'division' => 'interior',
+                'client' => 'PT. Sinar Mas Group (Kandis - Riau)',
+                'contract_value' => 750_000_000,
+                'year' => 2018,
+                'location' => 'Kandis, Riau',
+                'description' => "Renovasi lobby gedung kantor Sinar Mas Group dengan konsep interior modern dan representatif. Meliputi pekerjaan desain, konstruksi, dan penyelesaian akhir dengan material berkualitas.",
+            ],
+            [
+                'title' => 'Instalasi ETLE Polda Jawa Barat (18 Unit Kamera)',
+                'division' => 'it',
+                'client' => 'ETLE Nasional',
+                'contract_value' => 472_500_000,
+                'year' => 2020,
+                'location' => 'Bandung, Jawa Barat',
+                'description' => "Instalasi perangkat software dan hardware Electronic Traffic Law Enforcement (ETLE) untuk 18 unit kamera di wilayah Polda Jawa Barat, termasuk konfigurasi front-end hingga back-end sistem tilang elektronik.",
+            ],
+        ];
 
-        for ($i = 1; $i <= 24; $i++) {
-            $division = $divisions[array_rand($divisions)];
-            $title = match ($division) {
-                'it' => 'Implementasi Sistem '.fake()->company().' #'.$i,
-                'interior' => 'Renovasi Interior Kantor '.fake()->city().' #'.$i,
-                default => 'Pembangunan Gedung '.fake()->city().' #'.$i,
-            };
-
+        foreach ($projects as $i => $data) {
             $project = Project::updateOrCreate(
-                ['slug' => Str::slug($title)],
+                ['slug' => Str::slug($data['title'])],
                 [
-                    'client_id' => $clients ? $clients[array_rand($clients)] : null,
-                    'service_id' => $services ? $services[array_rand($services)] : null,
-                    'division' => $division,
-                    'title' => $title,
-                    'description' => fake()->paragraphs(3, true),
-                    'contract_value' => fake()->numberBetween(50_000_000, 5_000_000_000),
-                    'location' => $locations[array_rand($locations)],
-                    'year' => fake()->numberBetween(2019, 2025),
-                    'completed_at' => fake()->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
-                    'is_featured' => $i <= 6,
+                    'client_id' => Client::where('name', $data['client'])->value('id'),
+                    'service_id' => null,
+                    'division' => $data['division'],
+                    'title' => $data['title'],
+                    'description' => $data['description'],
+                    'contract_value' => $data['contract_value'],
+                    'location' => $data['location'],
+                    'year' => $data['year'],
+                    'completed_at' => $data['year'].'-12-01',
+                    'is_featured' => $i < 3,
                     'is_active' => true,
-                    'sort_order' => $i,
+                    'sort_order' => $i + 1,
                 ],
             );
 
@@ -47,8 +83,8 @@ class ProjectSeeder extends Seeder
             if ($project->images()->count() === 0) {
                 for ($j = 1; $j <= 3; $j++) {
                     $project->images()->create([
-                        'file_path' => "projects/sample-{$i}-{$j}.jpg",
-                        'caption' => "Dokumentasi proyek {$j}",
+                        'file_path' => 'projects/sample-'.($i + 1).'-'.$j.'.jpg',
+                        'caption' => 'Dokumentasi proyek '.$j,
                         'is_cover' => $j === 1,
                         'sort_order' => $j,
                     ]);
