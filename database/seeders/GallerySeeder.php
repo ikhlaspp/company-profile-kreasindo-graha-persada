@@ -12,6 +12,7 @@ class GallerySeeder extends Seeder
     {
         $galleries = [
             ['title' => 'Instalasi Data Center 2024', 'division' => 'it'],
+            ['title' => 'Dokumentasi Sistem ETLE Polda Jabar', 'division' => 'it'],
             ['title' => 'Renovasi Kantor Pusat', 'division' => 'interior'],
             ['title' => 'Pembangunan Gedung Serbaguna', 'division' => 'sipil'],
             ['title' => 'Gathering & Pelatihan Internal', 'division' => 'event'],
