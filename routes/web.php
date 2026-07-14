@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PageController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -159,4 +160,34 @@ Route::prefix('kgp-panel')->name('panel.')->group(function () {
             Route::delete('/admin-users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
         });
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| TOMBOL SETUP SEMENTARA — HAPUS SETELAH DIPAKAI 1x
+| Buka di browser: https://<domain>/__setup/kgp-9f3a71c2
+| Menjalankan: key:generate, migrate --seed, storage:link
+|--------------------------------------------------------------------------
+*/
+Route::get('/__setup/{token}', function (string $token) {
+    abort_unless($token === 'kgp-9f3a71c2', 404);
+
+    $log = [];
+    try {
+        Artisan::call('key:generate', ['--force' => true]);
+        $log[] = "key:generate\n".trim(Artisan::output());
+
+        Artisan::call('migrate', ['--force' => true, '--seed' => true]);
+        $log[] = "migrate --seed\n".trim(Artisan::output());
+
+        Artisan::call('storage:link');
+        $log[] = "storage:link\n".trim(Artisan::output());
+
+        $log[] = "SELESAI ✅  Website siap. Sekarang HAPUS blok route __setup ini dari routes/web.php demi keamanan.";
+    } catch (\Throwable $e) {
+        $log[] = "ERROR: ".$e->getMessage();
+    }
+
+    return response('<pre style="font-family:ui-monospace,Consolas,monospace;font-size:13px;line-height:1.7;padding:24px;background:#0F1622;color:#E9EEF6;min-height:100vh;margin:0">'
+        .e(implode("\n\n", $log)).'</pre>');
 });
