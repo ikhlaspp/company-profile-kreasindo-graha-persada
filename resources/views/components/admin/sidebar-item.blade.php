@@ -1,4 +1,4 @@
-@props(['href' => '#', 'icon' => 'circle', 'active' => false])
+@props(['href' => '#', 'icon' => 'circle', 'active' => false, 'badge' => null])
 
 <a href="{{ $href }}"
    @if ($active) aria-current="page" @endif
@@ -12,4 +12,7 @@
     <span @class(['absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r-full bg-brass-500 transition-opacity', 'opacity-100' => $active, 'opacity-0' => ! $active])></span>
     <x-admin.icon :name="$icon" class="h-[18px] w-[18px] shrink-0 {{ $active ? 'text-brass-300' : 'text-slate-500 group-hover:text-slate-300' }}" />
     <span class="truncate" x-show="!mini" x-cloak>{{ $slot }}</span>
+    @if (! is_null($badge) && (int) $badge > 0)
+        <span x-show="!mini" x-cloak class="ml-auto shrink-0 rounded-full bg-brass-500 px-1.5 py-0.5 text-[10px] font-bold leading-none text-navy-900">{{ $badge }}</span>
+    @endif
 </a>

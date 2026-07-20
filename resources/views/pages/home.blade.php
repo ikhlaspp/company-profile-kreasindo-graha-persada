@@ -129,7 +129,7 @@
             </div>
         </div>
         <div class="reveal aspect-[4/3] overflow-hidden rounded-sm shadow-lg" style="transition-delay:120ms">
-            <img src="{{ kgp_image(null, $about['image_seed'], 900, 700) }}" alt="Gedung {{ $about['name'] }}" class="w-full h-full object-cover" loading="lazy">
+            <img src="{{ $about['image'] }}" alt="Gedung {{ $about['name'] }}" class="w-full h-full object-cover" loading="lazy">
         </div>
     </div>
 </section>
@@ -164,7 +164,7 @@
 
 {{-- 5. CONTACT BAND --}}
 <section class="relative py-20 lg:py-28 overflow-hidden">
-    <img src="{{ asset('img/hero/contact-band.jpg') }}" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy">
+    <img src="{{ !empty($org['cta_band_image']) ? \Illuminate\Support\Facades\Storage::url($org['cta_band_image']) : asset('img/hero/contact-band.jpg') }}" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy">
     <div class="absolute inset-0 bg-navy-900/85"></div>
     <div class="reveal relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
         <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-300 mb-3">Mari Berkolaborasi</p>

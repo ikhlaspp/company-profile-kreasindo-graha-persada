@@ -79,17 +79,9 @@ class ProjectSeeder extends Seeder
                 ],
             );
 
-            // Avoid duplicating images on re-seed.
-            if ($project->images()->count() === 0) {
-                for ($j = 1; $j <= 3; $j++) {
-                    $project->images()->create([
-                        'file_path' => 'projects/sample-'.($i + 1).'-'.$j.'.jpg',
-                        'caption' => 'Dokumentasi proyek '.$j,
-                        'is_cover' => $j === 1,
-                        'sort_order' => $j,
-                    ]);
-                }
-            }
+            // Foto proyek diunggah manual lewat admin (Portofolio → Ubah → Galeri Foto).
+            // Tidak menyeed foto contoh agar kartu menampilkan placeholder rapi, bukan
+            // gambar stok acak.
         }
     }
 }

@@ -25,6 +25,7 @@ class DocumentCategoryController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'slug' => ['nullable', 'string', 'max:120'],
+            'is_legal' => ['required', 'boolean'],
         ]);
         $data['slug'] = $this->uniqueSlug(DocumentCategory::class, $data['name'], $request->input('slug'));
 
@@ -38,6 +39,7 @@ class DocumentCategoryController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'slug' => ['nullable', 'string', 'max:120'],
+            'is_legal' => ['required', 'boolean'],
         ]);
         $data['slug'] = $this->uniqueSlug(DocumentCategory::class, $data['name'], $request->input('slug'), $documentCategory->id);
 

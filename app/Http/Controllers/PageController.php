@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Career;
 use App\Models\Client;
+use App\Models\ContactMessage;
 use App\Models\Document;
 use App\Models\Gallery;
 use App\Models\Post;
@@ -30,13 +31,17 @@ class PageController extends Controller
      */
     public function home(): View
     {
-        // Hero slideshow — static KGP wording overlaid on each slide.
-        // Construction photos bundled in public/img/hero (Pexels license, free for commercial use).
-        $heroSlides = [
-            ['img' => 'img/hero/slide-1.jpg'],
-            ['img' => 'img/hero/slide-2.jpg'],
-            ['img' => 'img/hero/slide-3.jpg'],
-        ];
+        // Hero slideshow — gambar dapat diatur lewat admin (Pengaturan → Tampilan);
+        // fallback ke foto bawaan di public/img/hero bila belum diunggah.
+        $heroMedia = Setting::query()
+            ->whereIn('key', ['hero_slide_1', 'hero_slide_2', 'hero_slide_3'])
+            ->pluck('value', 'key');
+
+        $heroSlides = [];
+        foreach (['hero_slide_1' => 'slide-1', 'hero_slide_2' => 'slide-2', 'hero_slide_3' => 'slide-3'] as $key => $default) {
+            $stored = $heroMedia[$key] ?? null;
+            $heroSlides[] = ['img' => $stored ? 'storage/'.$stored : 'img/hero/'.$default.'.jpg'];
+        }
 
         // Portfolio gallery — featured (fallback to latest active) projects.
         $galleryProjects = Project::query()
@@ -69,7 +74,9 @@ class PageController extends Controller
             'name' => $settings['site_name'] ?? 'PT. Kreasindo Graha Persada',
             'excerpt' => $settings['company_history']
                 ?? 'Sejak 2016, PT. Kreasindo Graha Persada dipercaya instansi pemerintah, militer, BUMN, dan korporasi untuk solusi IT dan Interior terpadu. Kami dikenal karena inovasi, personalisasi, dan komitmen melampaui ekspektasi.',
-            'image_seed' => 'kgp-about',
+            'image' => ! empty($settings['about_image'])
+                ? Storage::url($settings['about_image'])
+                : asset('img/hero/slide-1.jpg'),
         ];
 
         // Clients grid.
@@ -176,6 +183,14 @@ class PageController extends Controller
      */
     public function about(): View
     {
+        // Narasi utama & gambar dapat diatur lewat admin (Pengaturan); fallback ke teks/gambar di bawah.
+        $cfg = Setting::query()
+            ->whereIn('key', ['company_history', 'company_vision', 'company_mission', 'about_image', 'leader_1_photo', 'leader_2_photo'])
+            ->pluck('value', 'key');
+        $aboutImage = ! empty($cfg['about_image'])
+            ? Storage::url($cfg['about_image'])
+            : asset('img/hero/slide-1.jpg');
+
         // --- Profil Perusahaan (verbatim from spec) ---
         $profile = [
             'paragraph'     => 'PT. Kreasindo Graha Persada yang resmi didirikan pada tanggal 19 Oktober 2016, dalam usahanya bergerak dibidang Teknologi IT (Software, Hardware dan Network) dan Design Interior & Furniture (Interior Contractor, Design & Build). Dengan didukung tenaga-tenaga dan pelaksana yang berkualitas serta berpengalaman dalam menangani proyek, sehingga menghasilkan mutu dan kualitas pekerjaan yang memuaskan pihak pengguna jasa, menjadikan PT. Kreasindo Graha Persada mendapatkan kepercayaan 100% untuk mengerjakan sejumlah proyek yang lingkup pengerjaannya tersebar di seluruh wilayah di Indonesia.',
@@ -202,6 +217,20 @@ class PageController extends Controller
             'Berperan sebagai prime mover (penggerak utama) bangkitnya industri Teknologi Informasi.',
         ];
 
+        // Sambungkan ke Pengaturan → Perusahaan (bila diisi admin; jika kosong, pakai teks di atas).
+        if (filled($cfg['company_history'] ?? null)) {
+            $profile['paragraph'] = $cfg['company_history'];
+        }
+        if (filled($cfg['company_vision'] ?? null)) {
+            $visi = $cfg['company_vision'];
+        }
+        if (filled($cfg['company_mission'] ?? null)) {
+            $misiLines = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $cfg['company_mission']))));
+            if ($misiLines) {
+                $misi = $misiLines;
+            }
+        }
+
         // --- Peranan & Komitmen — intro + 3 cards (verbatim) ---
         $peranan = [
             'intro' => 'Sebagai Perusahaan yang bergerak dibidang Teknologi IT (Software, Hardware dan Network) dan Design Interior & Furniture (Interior Contractor, Design & Build), pengerjaan serta pengendalian mutu produk merupakan prioritas paling utama untuk menjawab tantangan secara ekonomis serta efektif waktu.',
@@ -224,24 +253,16 @@ class PageController extends Controller
             ],
         ];
 
-        // --- Legalitas — 13 rows (verbatim numbers; linked to /dokumen) ---
-        // TODO: confirm both SBUJPK ME numbers with legal before go-live (see spec §Legalitas)
-        // TODO: possible missing PDF page 7 — check if additional legalitas docs exist
-        $legalitas = [
-            ['label' => 'SK Notaris',                 'number' => 'Rakhmat Musawwir Rasyidi, SH., MKn — No: 52-19.10, Tahun 2016'],
-            ['label' => 'KEP. MENKUMHAM RI',           'number' => 'No: AHU-0047336.AH.01.01, Tahun 2016'],
-            ['label' => 'Akta Perubahan (SK Notaris)', 'number' => 'Irma Bonita, SH — No: 60, 24 Juli 2020'],
-            ['label' => 'KEP. MENKUMHAM RI (Perubahan)','number' => 'No: AHU-0054675.AH.01.02, Tahun 2020'],
-            ['label' => 'NPWP',                        'number' => '80.457.164.4-403.000 — a.n. PT KREASINDO GRAHA PERSADA'],
-            ['label' => 'SP-PKP',                      'number' => 'S-698PKP/WPJ.33/KP.0703/2020'],
-            ['label' => 'NIB',                         'number' => '8120010232725'],
-            ['label' => 'SKDU',                        'number' => '503/019/2001/VI/2007'],
-            ['label' => 'SIUP',                        'number' => '510.41/028/03801/BPMTSP/2016'],
-            ['label' => 'SIUJK',                       'number' => '1-3201-2-00130-107572'],
-            ['label' => 'SBUJPK Gedung',               'number' => '0-3201-06-002-1-10-107572'],
-            ['label' => 'SBUJPK ME',                   'number' => '0-3201-09-153-1-10-107572'],  // TODO: confirm with legal (first SBUJPK ME)
-            ['label' => 'SBUJPK ME',                   'number' => '0-3201-08-153-1-10-107572'],  // TODO: confirm with legal (second SBUJPK ME)
-        ];
+        // --- Legalitas — sourced from the Document module (single source of truth).
+        // Documents in categories flagged `is_legal` appear here, grouped by category.
+        // Adding/editing/removing documents in the admin panel is reflected automatically. ---
+        $legalitas = Document::query()
+            ->whereHas('category', fn ($q) => $q->where('is_legal', true))
+            ->where('is_active', true)
+            ->with('category')
+            ->orderBy('sort_order')
+            ->get()
+            ->groupBy(fn (Document $doc) => $doc->category->name);
 
         // --- Leadership — 2 cards (verbatim quotes) ---
         // TODO: Yoyon vs Toyon — spec confirms "Yoyon Setiawan" (cross-check with HR/legal)
@@ -251,13 +272,13 @@ class PageController extends Controller
                 'name'     => 'Razzif Eka Darma',
                 'position' => 'Direktur Utama',
                 'quote'    => 'Ketika anda melakukan sesuatu dan gagal maka kegagalan itu bukan saja akan membuahkan kesuksesan, tetapi yang pasti kegagalan itu lebih berguna ketimbang anda tidak melakukan apapun.',
-                'photo'    => '',
+                'photo'    => $cfg['leader_1_photo'] ?? '',
             ],
             [
                 'name'     => 'Yoyon Setiawan',
                 'position' => 'Direktur Marketing',
                 'quote'    => 'Kemenangan dari sebuah kesuksesan sudah setengah dimenangkan ketika seseorang mencapai kebiasaan bekerja.',
-                'photo'    => '',
+                'photo'    => $cfg['leader_2_photo'] ?? '',
             ],
         ];
 
@@ -316,6 +337,7 @@ class PageController extends Controller
             'legalitas',
             'leadership',
             'orgChart',
+            'aboutImage',
         ));
     }
 
@@ -676,5 +698,32 @@ class PageController extends Controller
             ->pluck('value', 'key');
 
         return view('pages.contact', compact('settings'));
+    }
+
+    /**
+     * Store a contact-form submission and flash a success message.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function contactSubmit(Request $request): RedirectResponse
+    {
+        // Honeypot: bots fill hidden fields. Silently accept without saving.
+        if (filled($request->input('website'))) {
+            return redirect()->route('contact')->with('contact_success', true);
+        }
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:150'],
+            'company' => ['nullable', 'string', 'max:150'],
+            'email' => ['required', 'email', 'max:190'],
+            'phone' => ['required', 'string', 'max:40'],
+            'service_interest' => ['nullable', 'string', 'max:60'],
+            'message' => ['required', 'string', 'max:5000'],
+        ]);
+
+        ContactMessage::create($data + ['ip_address' => $request->ip()]);
+
+        return redirect()->route('contact')->with('contact_success', true);
     }
 }

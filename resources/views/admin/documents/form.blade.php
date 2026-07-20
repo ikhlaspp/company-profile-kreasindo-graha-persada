@@ -10,6 +10,7 @@
         @if ($editing) @method('PUT') @endif
         <div class="space-y-5 rounded-xl border border-line bg-card p-6 shadow-sm">
             <x-admin.form.input label="Judul Dokumen" name="title" :value="$item?->title" required />
+            <x-admin.form.input label="Nomor" name="number" :value="$item?->number" placeholder="mis. 80.457.164.4-403.000" hint="Nomor legalitas/izin. Opsional." />
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <x-admin.form.select label="Kategori" name="category_id" required :selected="$item?->document_category_id" :options="$categories" />
                 <x-admin.form.input label="Tahun" name="year" type="number" :value="$item?->year" placeholder="2026" />

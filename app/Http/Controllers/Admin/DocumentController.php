@@ -36,19 +36,26 @@ class DocumentController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $data = $this->validateData($request, fileRequired: true);
+        $data = $this->validateData($request, fileRequired: false);
 
-        $file = $request->file('file');
-        Document::create([
+        $payload = [
             'document_category_id' => $data['category_id'] ?? null,
             'title' => $data['title'],
-            'file_path' => $file->store('documents', 'public'),
-            'file_size_kb' => (int) ceil($file->getSize() / 1024),
-            'mime_type' => $file->getClientMimeType(),
+            'number' => $data['number'] ?? null,
             'year' => $data['year'] ?? null,
             'is_active' => $data['is_active'],
             'sort_order' => $data['sort_order'] ?? 0,
-        ]);
+            'file_path' => null,
+        ];
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $payload['file_path'] = $file->store('documents', 'public');
+            $payload['file_size_kb'] = (int) ceil($file->getSize() / 1024);
+            $payload['mime_type'] = $file->getClientMimeType();
+        }
+
+        Document::create($payload);
 
         return redirect()->route('panel.documents.index')->with('success', 'Dokumen berhasil ditambahkan.');
     }
@@ -65,6 +72,7 @@ class DocumentController extends Controller
         $payload = [
             'document_category_id' => $data['category_id'] ?? null,
             'title' => $data['title'],
+            'number' => $data['number'] ?? null,
             'year' => $data['year'] ?? null,
             'is_active' => $data['is_active'],
             'sort_order' => $data['sort_order'] ?? 0,
@@ -113,6 +121,7 @@ class DocumentController extends Controller
         return $request->validate([
             'category_id' => ['nullable', 'exists:document_categories,id'],
             'title' => ['required', 'string', 'max:200'],
+            'number' => ['nullable', 'string', 'max:190'],
             'year' => ['nullable', 'integer', 'min:1900', 'max:2100'],
             'sort_order' => ['nullable', 'integer'],
             'is_active' => ['required', 'boolean'],

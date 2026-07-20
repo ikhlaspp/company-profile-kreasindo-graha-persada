@@ -28,6 +28,7 @@ class SettingSeeder extends Seeder
             ['key' => 'contact_whatsapp', 'value' => '0813 1010 3160', 'type' => 'text', 'group' => 'contact'],
             ['key' => 'contact_address', 'value' => 'Jl. Kapuas IV No. 226, Abadijaya, Sukmajaya, Depok, Jawa Barat', 'type' => 'text', 'group' => 'contact'],
             ['key' => 'contact_hours', 'value' => 'Senin – Jumat, 08:00 – 17:00 WIB', 'type' => 'text', 'group' => 'contact'],
+            ['key' => 'contact_map', 'value' => 'Jl. Kapuas IV No. 226, Abadijaya, Sukmajaya, Depok, Jawa Barat', 'type' => 'text', 'group' => 'contact'],
             ['key' => 'social_instagram', 'value' => 'https://instagram.com/kreasindograhapersada', 'type' => 'text', 'group' => 'social'],
             ['key' => 'social_linkedin', 'value' => 'https://linkedin.com/company/kreasindo-graha-persada', 'type' => 'text', 'group' => 'social'],
             ['key' => 'chatbot_enabled', 'value' => '1', 'type' => 'boolean', 'group' => 'chatbot'],

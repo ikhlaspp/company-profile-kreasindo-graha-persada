@@ -52,143 +52,6 @@
   </div>
 </section>
 
-{{-- LEGALITAS PERUSAHAAN CREDENTIAL GRID --}}
-<section class="bg-paper py-16 lg:py-20">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-    <div class="reveal mb-12 max-w-2xl">
-      <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-700 mb-2">Identitas Legal</p>
-      <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-800 leading-snug">Legalitas Perusahaan</h2>
-      <p class="mt-3 font-sans text-sm text-slate-500 leading-relaxed">
-        PT. Kreasindo Graha Persada beroperasi dengan seluruh perizinan yang sah dan telah memenuhi kewajiban hukum sebagai badan usaha di Indonesia.
-      </p>
-    </div>
-
-    <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-      {{-- NPWP --}}
-      <div class="bg-card border border-line rounded-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-3">
-        <div class="flex items-start justify-between gap-3">
-          <div class="w-10 h-10 rounded-sm bg-navy-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-navy-700" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-          </div>
-          <span class="inline-flex items-center gap-1 font-sans text-xs font-semibold text-success bg-success/10 border border-success/20 rounded-full px-2.5 py-0.5">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            Terverifikasi
-          </span>
-        </div>
-        <div>
-          <p class="font-sans text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">NPWP</p>
-          <p class="font-display text-base font-semibold text-navy-800 tabular">80.457.164.4-403.000</p>
-        </div>
-      </div>
-
-      {{-- NIB --}}
-      <div class="bg-card border border-line rounded-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-3" style="transition-delay:60ms">
-        <div class="flex items-start justify-between gap-3">
-          <div class="w-10 h-10 rounded-sm bg-navy-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-navy-700" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0119 9.414V19a2 2 0 01-2 2z"/></svg>
-          </div>
-          <span class="inline-flex items-center gap-1 font-sans text-xs font-semibold text-success bg-success/10 border border-success/20 rounded-full px-2.5 py-0.5">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            Terverifikasi
-          </span>
-        </div>
-        <div>
-          <p class="font-sans text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">NIB — Nomor Induk Berusaha</p>
-          <p class="font-display text-base font-semibold text-navy-800 tabular">8120010232725</p>
-        </div>
-      </div>
-
-      {{-- SIUP --}}
-      <div class="bg-card border border-line rounded-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-3" style="transition-delay:120ms">
-        <div class="flex items-start justify-between gap-3">
-          <div class="w-10 h-10 rounded-sm bg-navy-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-navy-700" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-          </div>
-          <span class="inline-flex items-center gap-1 font-sans text-xs font-semibold text-success bg-success/10 border border-success/20 rounded-full px-2.5 py-0.5">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            Terverifikasi
-          </span>
-        </div>
-        <div>
-          <p class="font-sans text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">SIUP</p>
-          <p class="font-display text-base font-semibold text-navy-800">Surat Izin Usaha Perdagangan</p>
-        </div>
-      </div>
-
-      {{-- SIUJK --}}
-      <div class="bg-card border border-line rounded-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-3" style="transition-delay:60ms">
-        <div class="flex items-start justify-between gap-3">
-          <div class="w-10 h-10 rounded-sm bg-navy-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-navy-700" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M9 22V12h6v10"/></svg>
-          </div>
-          <span class="inline-flex items-center gap-1 font-sans text-xs font-semibold text-success bg-success/10 border border-success/20 rounded-full px-2.5 py-0.5">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            Terverifikasi
-          </span>
-        </div>
-        <div>
-          <p class="font-sans text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">SIUJK</p>
-          <p class="font-display text-base font-semibold text-navy-800">Surat Izin Usaha Jasa Konstruksi</p>
-        </div>
-      </div>
-
-      {{-- SBU Gedung --}}
-      <div class="bg-card border border-line rounded-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-3" style="transition-delay:120ms">
-        <div class="flex items-start justify-between gap-3">
-          <div class="w-10 h-10 rounded-sm bg-navy-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-navy-700" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 22V8l10-6 10 6v14H2z"/><path d="M8 22v-4h8v4M12 2v4"/></svg>
-          </div>
-          <span class="inline-flex items-center gap-1 font-sans text-xs font-semibold text-success bg-success/10 border border-success/20 rounded-full px-2.5 py-0.5">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            Terverifikasi
-          </span>
-        </div>
-        <div>
-          <p class="font-sans text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">SBU — Bidang Gedung</p>
-          <p class="font-display text-base font-semibold text-navy-800">Sertifikat Badan Usaha Konstruksi Gedung</p>
-        </div>
-      </div>
-
-      {{-- SBU ME --}}
-      <div class="bg-card border border-line rounded-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-3" style="transition-delay:180ms">
-        <div class="flex items-start justify-between gap-3">
-          <div class="w-10 h-10 rounded-sm bg-navy-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-navy-700" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          </div>
-          <span class="inline-flex items-center gap-1 font-sans text-xs font-semibold text-success bg-success/10 border border-success/20 rounded-full px-2.5 py-0.5">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-            Terverifikasi
-          </span>
-        </div>
-        <div>
-          <p class="font-sans text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">SBU — Mekanikal &amp; Elektrikal</p>
-          <p class="font-display text-base font-semibold text-navy-800">Sertifikat Badan Usaha Mekanikal &amp; Elektrikal</p>
-        </div>
-      </div>
-
-    </div>
-
-    {{-- Kekayaan Bersih highlight --}}
-    <div class="reveal mt-8 bg-navy-800 rounded-sm p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-      <div class="flex-shrink-0 w-12 h-12 rounded-sm bg-brass-500/20 border border-brass-500/40 flex items-center justify-center">
-        <svg class="w-6 h-6 text-brass-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
-      </div>
-      <div class="flex-1">
-        <p class="font-sans text-xs font-semibold uppercase tracking-widest text-brass-300 mb-1">Kapasitas Keuangan</p>
-        <p class="font-display text-xl font-semibold text-white">Kekayaan Bersih <span class="text-brass-300 tabular">Rp 5.000.000.000</span></p>
-        <p class="font-sans text-sm text-navy-100 mt-1">Menunjukkan kemampuan finansial yang kuat untuk mendukung proyek berskala nasional.</p>
-      </div>
-      <span class="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-success bg-success/10 border border-success/20 rounded-full px-3 py-1.5">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        Terverifikasi
-      </span>
-    </div>
-
-  </div>
-</section>
-
 {{-- DOCUMENT CATEGORIES --}}
 @if($documents->isEmpty())
   <section class="bg-paper2 py-24 text-center">
@@ -248,6 +111,8 @@
             } else {
               $sizeLabel = null;
             }
+
+            $hasFile = $document->hasFile();
           @endphp
 
           <div class="bg-card border border-line rounded-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-5 flex flex-col gap-4">
@@ -261,6 +126,9 @@
                 <h3 class="font-display text-sm lg:text-base font-semibold text-navy-800 leading-snug line-clamp-2">
                   {{ $document->title }}
                 </h3>
+                @if($document->number)
+                  <p class="mt-1 font-sans text-xs text-slate-500 tabular break-words">{{ $document->number }}</p>
+                @endif
               </div>
             </div>
 
@@ -291,10 +159,17 @@
 
             {{-- Download button --}}
             <div class="mt-auto">
+              @if($hasFile)
               <x-button as="a" href="{{ route('documents.download', $document) }}" variant="primary" size="sm" class="w-full justify-center">
                 <svg class="w-4 h-4 mr-1.5 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/><path d="M3 20h18"/></svg>
                 Unduh Dokumen
               </x-button>
+              @else
+              <span class="flex w-full items-center justify-center gap-1.5 rounded-sm border border-line bg-paper2/60 py-2 font-sans text-xs text-slate-400">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                Tersedia atas permintaan
+              </span>
+              @endif
             </div>
 
           </div>

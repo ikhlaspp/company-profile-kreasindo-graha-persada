@@ -9,6 +9,13 @@ class DocumentCategory extends Model
 {
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'is_legal' => 'boolean',
+        ];
+    }
+
     /**
      * @return HasMany<Document, $this>
      */

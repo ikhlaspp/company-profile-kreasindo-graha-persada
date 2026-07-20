@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\ChatLogController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DocumentCategoryController;
 use App\Http\Controllers\Admin\DocumentController;
@@ -18,7 +19,6 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PageController;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -36,6 +36,7 @@ Route::get('/dokumen', [PageController::class, 'documents'])->name('documents');
 Route::get('/dokumen/{document}/unduh', [PageController::class, 'documentDownload'])->name('documents.download');
 Route::get('/karir', [PageController::class, 'careers'])->name('careers');
 Route::get('/kontak', [PageController::class, 'contact'])->name('contact');
+Route::post('/kontak', [PageController::class, 'contactSubmit'])->name('contact.submit')->middleware('throttle:5,1');
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 Route::post('/api/chat', [ChatController::class, 'send'])->name('chat.send');
 
@@ -71,6 +72,8 @@ Route::prefix('kgp-panel')->name('panel.')->group(function () {
             Route::get('/portofolio/{project}/ubah', [ProjectController::class, 'edit'])->name('projects.edit');
             Route::put('/portofolio/{project}', [ProjectController::class, 'update'])->name('projects.update');
             Route::delete('/portofolio/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+            Route::delete('/portofolio/{project}/foto/{image}', [ProjectController::class, 'destroyPhoto'])->name('projects.photos.destroy');
+            Route::patch('/portofolio/{project}/foto/{image}/cover', [ProjectController::class, 'setCover'])->name('projects.photos.cover');
 
             // Klien
             Route::get('/klien', [ClientController::class, 'index'])->name('clients.index');
@@ -144,6 +147,11 @@ Route::prefix('kgp-panel')->name('panel.')->group(function () {
 
             Route::get('/log-chatbot', [ChatLogController::class, 'index'])->name('chatlogs.index');
             Route::get('/log-chatbot/{conversation}', [ChatLogController::class, 'show'])->name('chatlogs.show');
+
+            // Pesan Masuk (formulir kontak)
+            Route::get('/pesan', [ContactMessageController::class, 'index'])->name('messages.index');
+            Route::get('/pesan/{contactMessage}', [ContactMessageController::class, 'show'])->name('messages.show');
+            Route::delete('/pesan/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('messages.destroy');
         });
 
         // users & settings — superadmin.
@@ -162,32 +170,3 @@ Route::prefix('kgp-panel')->name('panel.')->group(function () {
     });
 });
 
-/*
-|--------------------------------------------------------------------------
-| TOMBOL SETUP SEMENTARA — HAPUS SETELAH DIPAKAI 1x
-| Buka di browser: https://<domain>/__setup/kgp-9f3a71c2
-| Menjalankan: key:generate, migrate --seed, storage:link
-|--------------------------------------------------------------------------
-*/
-Route::get('/__setup/{token}', function (string $token) {
-    abort_unless($token === 'kgp-9f3a71c2', 404);
-
-    $log = [];
-    try {
-        Artisan::call('key:generate', ['--force' => true]);
-        $log[] = "key:generate\n".trim(Artisan::output());
-
-        Artisan::call('migrate', ['--force' => true, '--seed' => true]);
-        $log[] = "migrate --seed\n".trim(Artisan::output());
-
-        Artisan::call('storage:link');
-        $log[] = "storage:link\n".trim(Artisan::output());
-
-        $log[] = "SELESAI ✅  Website siap. Sekarang HAPUS blok route __setup ini dari routes/web.php demi keamanan.";
-    } catch (\Throwable $e) {
-        $log[] = "ERROR: ".$e->getMessage();
-    }
-
-    return response('<pre style="font-family:ui-monospace,Consolas,monospace;font-size:13px;line-height:1.7;padding:24px;background:#0F1622;color:#E9EEF6;min-height:100vh;margin:0">'
-        .e(implode("\n\n", $log)).'</pre>');
-});

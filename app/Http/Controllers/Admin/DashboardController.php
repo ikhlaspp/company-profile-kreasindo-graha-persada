@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ChatConversation;
 use App\Models\ChatLog;
 use App\Models\Client;
+use App\Models\ContactMessage;
 use App\Models\Document;
 use App\Models\Faq;
 use App\Models\Post;
@@ -23,6 +24,7 @@ class DashboardController extends Controller
             ['label' => 'Dokumen', 'value' => (string) Document::count(), 'icon' => 'file-text'],
             ['label' => 'FAQ Aktif', 'value' => (string) Faq::where('is_active', true)->count(), 'icon' => 'message'],
             ['label' => 'Percakapan Chatbot', 'value' => (string) ChatConversation::count(), 'icon' => 'list'],
+            ['label' => 'Pesan Belum Dibaca', 'value' => (string) ContactMessage::where('is_read', false)->count(), 'icon' => 'mail'],
         ];
 
         $faqCount = ChatLog::where('source', 'faq')->count();

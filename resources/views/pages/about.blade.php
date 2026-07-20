@@ -173,7 +173,7 @@
       {{-- RIGHT — placeholder image --}}
       <div class="reveal relative aspect-[9/7] rounded-sm overflow-hidden shadow-lg" style="transition-delay:120ms">
         <img
-          src="{{ kgp_image(null, 'kgp-about', 900, 700) }}"
+          src="{{ $aboutImage }}"
           alt="PT. Kreasindo Graha Persada — kantor & tim"
           class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
           loading="lazy">
@@ -316,47 +316,52 @@
     <div class="mb-12 reveal">
       <h2 class="font-display text-3xl lg:text-4xl font-semibold text-navy-900">Dokumen Resmi Perusahaan</h2>
       <p class="mt-3 font-sans text-slate-500 max-w-xl">
-        Seluruh dokumen legalitas KGP telah terverifikasi. Klik badge untuk mengunduh pada halaman Dokumen.
+        Legalitas KGP dikelompokkan menurut jenisnya. Dokumen yang tersedia dapat diunduh langsung; selengkapnya di halaman Dokumen.
       </p>
     </div>
 
-    <div class="reveal grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4" style="transition-delay:80ms">
-      @foreach($legalitas as $i => $doc)
-      <a
-        href="{{ route('documents') }}"
-        title="{{ $doc['number'] }}"
-        class="group relative flex flex-col bg-card border border-line rounded-sm p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-brass-500/40 transition-all duration-200"
-        style="transition-delay:{{ $i * 40 }}ms"
-      >
-        {{-- green verified dot --}}
-        <div class="absolute top-3 right-3 flex items-center gap-1">
-          <div class="w-2 h-2 rounded-full bg-success" title="Terverifikasi" aria-label="Terverifikasi"></div>
-        </div>
+    @forelse($legalitas as $categoryName => $docs)
+    <div class="reveal mb-10 last:mb-0">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-1 h-6 bg-brass-500 rounded-full flex-shrink-0"></div>
+        <h3 class="font-display text-lg lg:text-xl font-semibold text-navy-800">{{ $categoryName }}</h3>
+        <div class="flex-1 h-px bg-line"></div>
+      </div>
 
-        {{-- label --}}
-        <p class="font-sans text-xs font-bold uppercase tracking-wide text-navy-900 leading-tight pr-4 mb-2">
-          {{ $doc['label'] }}
-        </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+        @foreach($docs as $doc)
+        @php $dl = $doc->hasFile(); @endphp
+        <a
+          href="{{ $dl ? route('documents.download', $doc) : route('documents') }}"
+          class="group relative flex flex-col bg-card border border-line rounded-sm p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-brass-500/40 transition-all duration-200"
+        >
+          <p class="font-sans text-xs font-bold uppercase tracking-wide text-navy-900 leading-tight mb-2">
+            {{ $doc->title }}
+          </p>
 
-        {{-- number (small, subtle) --}}
-        <p class="font-sans text-[10px] text-slate-400 leading-tight line-clamp-2 tabular mt-auto">
-          {{ $doc['number'] }}
-        </p>
+          @if($doc->number)
+          <p class="font-sans text-[11px] text-slate-500 leading-tight tabular break-words mt-auto">
+            {{ $doc->number }}
+          </p>
+          @endif
 
-        {{-- hover: "Lihat Dokumen" --}}
-        <div class="mt-3 pt-2 border-t border-line flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <span class="font-sans text-[10px] font-semibold uppercase tracking-wide text-brass-700">Lihat Dokumen</span>
-          <svg class="w-3 h-3 text-brass-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-          </svg>
-        </div>
-      </a>
-      @endforeach
+          <div class="mt-3 pt-2 border-t border-line flex items-center gap-1 {{ $dl ? '' : 'opacity-0 group-hover:opacity-100 transition-opacity duration-200' }}">
+            <span class="font-sans text-[10px] font-semibold uppercase tracking-wide {{ $dl ? 'text-brass-700' : 'text-slate-400' }}">{{ $dl ? 'Unduh Dokumen' : 'Lihat di Dokumen' }}</span>
+            <svg class="w-3 h-3 {{ $dl ? 'text-brass-700' : 'text-slate-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+        @endforeach
+      </div>
     </div>
+    @empty
+    <p class="reveal font-sans text-slate-400">Dokumen legalitas akan segera ditampilkan.</p>
+    @endforelse
 
-    <div class="mt-10 reveal" style="transition-delay:240ms">
+    <div class="mt-10 reveal">
       <x-button as="a" href="{{ route('documents') }}" variant="primary" size="md">
-        Unduh Semua Dokumen Legal &rarr;
+        Lihat Semua Dokumen &rarr;
       </x-button>
     </div>
 

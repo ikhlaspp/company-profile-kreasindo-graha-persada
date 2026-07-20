@@ -25,6 +25,7 @@ class SettingController extends Controller
         'contact_whatsapp' => 'text',
         'contact_email' => 'text',
         'contact_hours' => 'text',
+        'contact_map' => 'text',
         'company_history' => 'text',
         'company_vision' => 'text',
         'company_mission' => 'text',
@@ -35,6 +36,13 @@ class SettingController extends Controller
         'chatbot_greeting' => 'text',
         'chatbot_enabled' => 'boolean',
         'logo' => 'image',
+        'hero_slide_1' => 'image',
+        'hero_slide_2' => 'image',
+        'hero_slide_3' => 'image',
+        'cta_band_image' => 'image',
+        'about_image' => 'image',
+        'leader_1_photo' => 'image',
+        'leader_2_photo' => 'image',
     ];
 
     /** Group per prefix — dipakai query publik (layouts/app, about, chatbot). */
@@ -67,6 +75,7 @@ class SettingController extends Controller
             'contact_whatsapp' => ['nullable', 'string', 'max:100'],
             'contact_email' => ['nullable', 'email', 'max:150'],
             'contact_hours' => ['nullable', 'string', 'max:150'],
+            'contact_map' => ['nullable', 'string', 'max:1000'],
             'company_history' => ['nullable', 'string', 'max:2000'],
             'company_vision' => ['nullable', 'string', 'max:1000'],
             'company_mission' => ['nullable', 'string', 'max:2000'],
@@ -77,12 +86,19 @@ class SettingController extends Controller
             'chatbot_greeting' => ['nullable', 'string', 'max:500'],
             'chatbot_enabled' => ['nullable', 'boolean'],
             'logo' => ['nullable', 'image', 'max:5120'],
+            'hero_slide_1' => ['nullable', 'image', 'max:5120'],
+            'hero_slide_2' => ['nullable', 'image', 'max:5120'],
+            'hero_slide_3' => ['nullable', 'image', 'max:5120'],
+            'cta_band_image' => ['nullable', 'image', 'max:5120'],
+            'about_image' => ['nullable', 'image', 'max:5120'],
+            'leader_1_photo' => ['nullable', 'image', 'max:5120'],
+            'leader_2_photo' => ['nullable', 'image', 'max:5120'],
         ]);
 
         foreach (self::KEYS as $key => $type) {
-            if ($key === 'logo') {
-                if ($request->hasFile('logo')) {
-                    $this->put('logo', $request->file('logo')->store('settings', 'public'), 'image');
+            if ($type === 'image') {
+                if ($request->hasFile($key)) {
+                    $this->put($key, $request->file($key)->store('settings', 'public'), 'image');
                 }
 
                 continue;

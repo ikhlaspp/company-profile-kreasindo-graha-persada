@@ -74,35 +74,53 @@
         </div>
         @endif
 
-        {{-- Office Hours Card --}}
-        <div class="bg-navy-800 rounded-sm p-5">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-8 h-8 rounded-sm bg-brass-500/20 border border-brass-500/40 flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4 text-brass-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            </div>
-            <h5 class="font-sans font-semibold text-sm text-white">Jam Operasional</h5>
+        {{-- Office Hours --}}
+        <div class="bg-card border border-line rounded-sm p-5 flex gap-4 items-start hover:shadow-sm transition-shadow">
+          <div class="w-10 h-10 rounded-sm bg-navy-900 border border-navy-700 flex items-center justify-center flex-shrink-0 text-brass-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           </div>
-          @if(!empty($settings['contact_hours'] ?? null))
-            <p class="font-sans text-sm text-navy-100 leading-relaxed">{{ $settings['contact_hours'] }}</p>
-          @else
-            <div class="space-y-2">
-              <div class="flex justify-between font-sans text-sm border-b border-white/10 pb-2">
-                <span class="text-navy-100">Senin &ndash; Jumat</span>
-                <span class="font-semibold text-white tabular">08:00 &ndash; 17:00 WIB</span>
-              </div>
-              <div class="flex justify-between font-sans text-sm border-b border-white/10 pb-2">
-                <span class="text-navy-100">Sabtu</span>
-                <span class="font-semibold text-white tabular">08:00 &ndash; 13:00 WIB</span>
-              </div>
-              <div class="flex justify-between font-sans text-sm">
-                <span class="text-navy-100">Minggu &amp; Libur</span>
-                <span class="font-semibold text-slate-400">Tutup</span>
-              </div>
-            </div>
-          @endif
+          <div>
+            <h5 class="font-sans font-semibold text-xs uppercase tracking-widest text-slate-400 mb-1">Jam Operasional</h5>
+            <p class="font-sans text-sm text-navy-800 font-medium leading-relaxed">{{ $settings['contact_hours'] ?? 'Senin – Jumat, 08:00 – 17:00 WIB' }}</p>
+          </div>
         </div>
 
-        {{-- Map placeholder --}}
+        {{-- Map --}}
+        @php
+          $mapQuery = trim($settings['contact_map'] ?? '') !== '' ? trim($settings['contact_map']) : trim($settings['contact_address'] ?? '');
+          $mapSrc = null;
+          if ($mapQuery !== '') {
+            if (\Illuminate\Support\Str::contains($mapQuery, '<iframe')) {
+              if (preg_match('/src="([^"]+)"/', $mapQuery, $mm)) { $mapSrc = $mm[1]; }
+            } elseif (\Illuminate\Support\Str::startsWith($mapQuery, 'http') && \Illuminate\Support\Str::contains($mapQuery, 'output=embed')) {
+              $mapSrc = $mapQuery;
+            } else {
+              $mapSrc = 'https://maps.google.com/maps?q='.urlencode($mapQuery).'&z=16&output=embed';
+            }
+          }
+          $addressText = trim($settings['contact_address'] ?? '');
+          $mapLink = $addressText !== '' ? 'https://www.google.com/maps/search/?api=1&query='.urlencode($addressText) : null;
+        @endphp
+
+        @if($mapSrc)
+        <div class="rounded-sm overflow-hidden border border-line bg-card">
+          <iframe
+            src="{{ $mapSrc }}"
+            class="w-full aspect-[16/10] block"
+            style="border:0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            title="Lokasi Kantor PT. Kreasindo Graha Persada"></iframe>
+          @if($mapLink)
+          <a href="{{ $mapLink }}" target="_blank" rel="noopener"
+             class="flex items-center justify-center gap-2 border-t border-line px-4 py-3 font-sans text-xs font-semibold text-navy-700 hover:text-brass-700 hover:bg-brass-100/30 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Buka di Google Maps
+          </a>
+          @endif
+        </div>
+        @else
         <div class="relative aspect-[16/10] rounded-sm overflow-hidden border border-line">
           <div class="absolute inset-0 bg-blueprint"></div>
           <div class="absolute inset-0"
@@ -118,6 +136,7 @@
             </div>
           </div>
         </div>
+        @endif
 
         {{-- Social links --}}
         @if(!empty($settings['social_instagram'] ?? null) || !empty($settings['social_linkedin'] ?? null) || !empty($settings['social_facebook'] ?? null))
@@ -161,14 +180,42 @@
             </p>
           </div>
 
-          <form onsubmit="event.preventDefault()">
+          @if (session('contact_success'))
+            <div class="mb-6 flex items-start gap-3 rounded-sm border border-success/30 bg-success/10 px-4 py-3">
+              <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-success" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+              <div>
+                <p class="font-sans text-sm font-semibold text-navy-800">Pesan Anda terkirim.</p>
+                <p class="font-sans text-xs text-slate-500">Terima kasih. Tim kami akan merespons dalam 1&ndash;2 hari kerja.</p>
+              </div>
+            </div>
+          @endif
+
+          @if ($errors->any())
+            <div class="mb-6 rounded-sm border border-danger/30 bg-danger/10 px-4 py-3">
+              <p class="mb-1 font-sans text-sm font-semibold text-danger">Mohon periksa kembali isian Anda:</p>
+              <ul class="list-inside list-disc space-y-0.5 font-sans text-xs text-danger/90">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+
+          <form action="{{ route('contact.submit') }}" method="POST" novalidate>
+            @csrf
+            {{-- Honeypot anti-spam: biarkan kosong; disembunyikan dari pengguna --}}
+            <div class="hidden" aria-hidden="true">
+              <label>Jangan isi kolom ini
+                <input type="text" name="website" tabindex="-1" autocomplete="off">
+              </label>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
               {{-- Nama Lengkap --}}
               <div class="flex flex-col gap-1.5">
                 <label class="font-sans font-semibold text-xs text-navy-800">
                   Nama Lengkap <span class="text-danger">*</span>
                 </label>
-                <input type="text" placeholder="Nama Anda" required
+                <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama Anda" required
                        class="font-sans text-sm px-3.5 py-2.5 border border-line rounded-sm bg-white text-ink
                               focus:outline-none focus:border-brass-500 focus:ring-2 focus:ring-brass-500/20 transition-colors placeholder:text-slate-300">
               </div>
@@ -176,7 +223,7 @@
               {{-- Nama Instansi --}}
               <div class="flex flex-col gap-1.5">
                 <label class="font-sans font-semibold text-xs text-navy-800">Nama Instansi</label>
-                <input type="text" placeholder="PT / Instansi Anda"
+                <input type="text" name="company" value="{{ old('company') }}" placeholder="PT / Instansi Anda"
                        class="font-sans text-sm px-3.5 py-2.5 border border-line rounded-sm bg-white text-ink
                               focus:outline-none focus:border-brass-500 focus:ring-2 focus:ring-brass-500/20 transition-colors placeholder:text-slate-300">
               </div>
@@ -188,7 +235,7 @@
                 <label class="font-sans font-semibold text-xs text-navy-800">
                   Email <span class="text-danger">*</span>
                 </label>
-                <input type="email" placeholder="nama@email.com" required
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@email.com" required
                        class="font-sans text-sm px-3.5 py-2.5 border border-line rounded-sm bg-white text-ink
                               focus:outline-none focus:border-brass-500 focus:ring-2 focus:ring-brass-500/20 transition-colors placeholder:text-slate-300">
               </div>
@@ -198,7 +245,7 @@
                 <label class="font-sans font-semibold text-xs text-navy-800">
                   Nomor Telepon <span class="text-danger">*</span>
                 </label>
-                <input type="tel" placeholder="08xx-xxxx-xxxx" required
+                <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="08xx-xxxx-xxxx" required
                        class="font-sans text-sm px-3.5 py-2.5 border border-line rounded-sm bg-white text-ink
                               focus:outline-none focus:border-brass-500 focus:ring-2 focus:ring-brass-500/20 transition-colors placeholder:text-slate-300">
               </div>
@@ -207,14 +254,12 @@
             {{-- Minat Layanan --}}
             <div class="flex flex-col gap-1.5 mb-5">
               <label class="font-sans font-semibold text-xs text-navy-800">Minat Layanan</label>
-              <select class="font-sans text-sm px-3.5 py-2.5 border border-line rounded-sm bg-white text-ink
+              <select name="service_interest" class="font-sans text-sm px-3.5 py-2.5 border border-line rounded-sm bg-white text-ink
                              focus:outline-none focus:border-brass-500 focus:ring-2 focus:ring-brass-500/20 transition-colors">
                 <option value="">— Pilih Layanan —</option>
-                <option value="it">IT &mdash; Infrastruktur Jaringan &amp; Software</option>
-                <option value="interior">Interior &mdash; Desain &amp; Build</option>
-                <option value="konstruksi">Sipil / Konstruksi Bangunan Gedung</option>
-                <option value="me">Mekanikal &amp; Elektrikal</option>
-                <option value="lainnya">Lainnya / Konsultasi Umum</option>
+                <option value="it" @selected(old('service_interest') === 'it')>IT &mdash; Software &amp; Hardware</option>
+                <option value="interior" @selected(old('service_interest') === 'interior')>Interior &amp; Furniture</option>
+                <option value="lainnya" @selected(old('service_interest') === 'lainnya')>Lainnya / Konsultasi Umum</option>
               </select>
             </div>
 
@@ -223,10 +268,9 @@
               <label class="font-sans font-semibold text-xs text-navy-800">
                 Pesan <span class="text-danger">*</span>
               </label>
-              <textarea rows="5" placeholder="Jelaskan kebutuhan proyek Anda secara singkat..." required
+              <textarea name="message" rows="5" placeholder="Jelaskan kebutuhan proyek Anda secara singkat..." required
                         class="font-sans text-sm px-3.5 py-2.5 border border-line rounded-sm bg-white text-ink resize-vertical
-                               focus:outline-none focus:border-brass-500 focus:ring-2 focus:ring-brass-500/20 transition-colors placeholder:text-slate-300 min-h-[120px]">
-              </textarea>
+                               focus:outline-none focus:border-brass-500 focus:ring-2 focus:ring-brass-500/20 transition-colors placeholder:text-slate-300 min-h-[120px]">{{ old('message') }}</textarea>
             </div>
 
             <x-button type="submit" variant="accent" size="lg" class="w-full justify-center">
@@ -241,25 +285,6 @@
           </form>
         </div>
 
-        {{-- Quick contact strip --}}
-        <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          @if(!empty($settings['contact_phone'] ?? null))
-          <div class="bg-card border border-line rounded-sm px-4 py-3 text-center hover:border-brass-500/40 transition-colors">
-            <p class="font-sans text-xs text-slate-400 mb-0.5">Telepon Langsung</p>
-            <p class="font-sans text-xs font-semibold text-navy-800">{{ $settings['contact_phone'] }}</p>
-          </div>
-          @endif
-          @if(!empty($settings['contact_email'] ?? null))
-          <div class="bg-card border border-line rounded-sm px-4 py-3 text-center hover:border-brass-500/40 transition-colors">
-            <p class="font-sans text-xs text-slate-400 mb-0.5">Email Kami</p>
-            <p class="font-sans text-xs font-semibold text-navy-800 truncate">{{ $settings['contact_email'] }}</p>
-          </div>
-          @endif
-          <div class="bg-card border border-line rounded-sm px-4 py-3 text-center hover:border-brass-500/40 transition-colors">
-            <p class="font-sans text-xs text-slate-400 mb-0.5">Respons</p>
-            <p class="font-sans text-xs font-semibold text-navy-800">1&ndash;2 Hari Kerja</p>
-          </div>
-        </div>
       </div>
 
     </div>

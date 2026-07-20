@@ -44,6 +44,11 @@
 
         @if ($u?->hasRole('admin'))
             <div class="space-y-1">
+                <p x-show="!mini" x-cloak class="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">Komunikasi</p>
+                <x-admin.sidebar-item :href="route('panel.messages.index')" icon="mail" :active="request()->routeIs('panel.messages.*')" :badge="\App\Models\ContactMessage::where('is_read', false)->count()">Pesan Masuk</x-admin.sidebar-item>
+            </div>
+
+            <div class="space-y-1">
                 <p x-show="!mini" x-cloak class="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">Chatbot</p>
                 <x-admin.sidebar-item :href="route('panel.faqs.index')" icon="message" :active="request()->routeIs('panel.faqs.*')">FAQ Chatbot</x-admin.sidebar-item>
                 <x-admin.sidebar-item :href="route('panel.chatlogs.index')" icon="list" :active="request()->routeIs('panel.chatlogs.*')">Log Chatbot</x-admin.sidebar-item>

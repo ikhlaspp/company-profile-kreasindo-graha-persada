@@ -6,9 +6,11 @@ use App\Http\Controllers\Admin\Concerns\InteractsWithResource;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Project;
+use App\Models\ProjectImage;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -77,6 +79,35 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect()->route('panel.projects.index')->with('success', 'Proyek berhasil dihapus.');
+    }
+
+    public function destroyPhoto(Project $project, ProjectImage $image): RedirectResponse
+    {
+        abort_unless($image->project_id === $project->id, 404);
+
+        $wasCover = $image->is_cover;
+
+        if ($image->file_path) {
+            Storage::disk('public')->delete($image->file_path);
+        }
+        $image->delete();
+
+        // Jika foto yang dihapus adalah cover, promosikan foto tersisa paling awal.
+        if ($wasCover) {
+            $project->images()->oldest('sort_order')->first()?->update(['is_cover' => true]);
+        }
+
+        return redirect()->route('panel.projects.edit', $project)->with('success', 'Foto berhasil dihapus.');
+    }
+
+    public function setCover(Project $project, ProjectImage $image): RedirectResponse
+    {
+        abort_unless($image->project_id === $project->id, 404);
+
+        $project->images()->update(['is_cover' => false]);
+        $image->update(['is_cover' => true]);
+
+        return redirect()->route('panel.projects.edit', $project)->with('success', 'Cover proyek diperbarui.');
     }
 
     /**

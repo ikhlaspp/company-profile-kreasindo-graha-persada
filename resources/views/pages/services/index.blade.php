@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Layanan — KGP')
-@section('meta_description', 'Layanan PT. Kreasindo Graha Persada meliputi Divisi IT, Interior & Furniture, Sipil/Konstruksi, serta Mekanikal & Elektrikal untuk instansi pemerintah, militer, dan korporasi.')
+@section('meta_description', 'Layanan PT. Kreasindo Graha Persada: Software, Hardware, serta Interior & Furniture untuk instansi pemerintah, militer, dan korporasi.')
 
 @section('content')
 
@@ -21,7 +21,7 @@
     </h1>
 
     <p class="text-navy-100 text-lg max-w-2xl leading-relaxed mb-10">
-      Empat divisi keahlian kami bekerja sinergis &mdash; dari infrastruktur digital hingga desain ruang &mdash; untuk memberikan solusi menyeluruh bagi instansi pemerintah, militer, dan korporasi.
+      Produk utama kami &mdash; Software, Hardware, dan Interior &amp; Furniture &mdash; bekerja sinergis untuk memberikan solusi menyeluruh bagi instansi pemerintah, militer, dan korporasi.
     </p>
 
     {{-- Division jump links --}}
@@ -45,54 +45,43 @@
     <div class="text-center mb-12">
       <p class="text-xs font-sans font-semibold uppercase tracking-widest text-brass-300 mb-3">Area Keahlian</p>
       <h2 class="font-display text-2xl sm:text-3xl text-white font-semibold max-w-xl mx-auto">
-        Empat Pilar Kompetensi KGP
+        Tiga Pilar Kompetensi KGP
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-      {{-- IT --}}
+      {{-- Software --}}
       <div class="bg-navy-700/60 border border-navy-600 rounded-sm p-6 reveal" style="transition-delay:0ms">
         <div class="w-12 h-12 rounded-xl bg-navy-600 flex items-center justify-center mb-5">
           <svg class="w-6 h-6 text-brass-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
           </svg>
         </div>
-        <h3 class="font-display text-white font-semibold text-lg mb-2">Teknologi IT</h3>
-        <p class="text-navy-100 text-sm leading-relaxed">Software, Hardware, dan jaringan untuk operasional digital institusi yang aman dan andal.</p>
+        <h3 class="font-display text-white font-semibold text-lg mb-2">Software</h3>
+        <p class="text-navy-100 text-sm leading-relaxed">Pengembangan perangkat lunak dan aplikasi pemasaran digital untuk memperluas bisnis serta meningkatkan nilai kompetisi klien.</p>
       </div>
 
-      {{-- Interior --}}
+      {{-- Hardware --}}
       <div class="bg-navy-700/60 border border-navy-600 rounded-sm p-6 reveal" style="transition-delay:120ms">
+        <div class="w-12 h-12 rounded-xl bg-navy-600 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brass-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-12-2h.01M7 16h.01"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-white font-semibold text-lg mb-2">Hardware</h3>
+        <p class="text-navy-100 text-sm leading-relaxed">Solusi sistem integrasi dan penyediaan perangkat keras dengan Server Expert bersertifikasi, Managed Services, dan konsultasi infrastruktur IT.</p>
+      </div>
+
+      {{-- Interior & Furniture --}}
+      <div class="bg-navy-700/60 border border-navy-600 rounded-sm p-6 reveal" style="transition-delay:240ms">
         <div class="w-12 h-12 rounded-xl bg-brass-700/40 flex items-center justify-center mb-5">
           <svg class="w-6 h-6 text-brass-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
           </svg>
         </div>
         <h3 class="font-display text-white font-semibold text-lg mb-2">Interior &amp; Furniture</h3>
-        <p class="text-navy-100 text-sm leading-relaxed">Desain &amp; Build ruang kerja, ruang operasional, dan furnitur fungsional berkarakter profesional.</p>
-      </div>
-
-      {{-- Sipil/Konstruksi --}}
-      <div class="bg-navy-700/60 border border-navy-600 rounded-sm p-6 reveal" style="transition-delay:240ms">
-        <div class="w-12 h-12 rounded-xl bg-navy-600 flex items-center justify-center mb-5">
-          <svg class="w-6 h-6 text-brass-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-          </svg>
-        </div>
-        <h3 class="font-display text-white font-semibold text-lg mb-2">Sipil &amp; Konstruksi</h3>
-        <p class="text-navy-100 text-sm leading-relaxed">Pembangunan gedung dan fasilitas sipil berstandardar SBU Gedung untuk proyek skala institusional.</p>
-      </div>
-
-      {{-- ME --}}
-      <div class="bg-navy-700/60 border border-navy-600 rounded-sm p-6 reveal" style="transition-delay:360ms">
-        <div class="w-12 h-12 rounded-xl bg-navy-600 flex items-center justify-center mb-5">
-          <svg class="w-6 h-6 text-brass-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065zM15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-        </div>
-        <h3 class="font-display text-white font-semibold text-lg mb-2">Mekanikal &amp; Elektrikal</h3>
-        <p class="text-navy-100 text-sm leading-relaxed">Sistem ME berstandar SBU ME: instalasi listrik, HVAC, plumbing, dan sistem keamanan gedung.</p>
+        <p class="text-navy-100 text-sm leading-relaxed">Manajemen, rancang-bangun desain, dan konstruksi interior &amp; furniture dengan sistem manajemen proyek dan standar keselamatan kerja.</p>
       </div>
 
     </div>

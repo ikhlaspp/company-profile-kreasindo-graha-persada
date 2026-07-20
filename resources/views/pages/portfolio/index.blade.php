@@ -126,7 +126,7 @@
     </div>
     {{-- END filter bar --}}
 
-    {{-- Projects grid — visual-first, first item larger --}}
+    {{-- Projects grid — uniform 3-column cards --}}
     @forelse($projects as $project)
     @php
       $cover = $project->images->firstWhere('is_cover', true) ?? $project->images->first();
@@ -149,16 +149,16 @@
       };
     @endphp
     @if($loop->first)
-    <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+    <div class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 lg:auto-rows-fr">
     @endif
 
       <a href="{{ route('portfolio.show', $project->slug) }}"
          class="group relative bg-card border border-line rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col
-                {{ $loop->first ? 'sm:col-span-2 lg:col-span-2' : '' }}"
+                {{ $loop->first ? 'sm:col-span-2 lg:col-span-2 lg:row-span-2' : '' }}"
          style="{{ $loop->index > 0 ? 'transition-delay:' . min(($loop->index * 80), 320) . 'ms' : '' }}">
 
         {{-- Image area --}}
-        <div class="relative overflow-hidden {{ $loop->first ? 'aspect-[16/9]' : 'aspect-[4/3]' }}">
+        <div class="relative overflow-hidden {{ $loop->first ? 'flex-1 min-h-[240px]' : 'aspect-[4/3]' }}">
           @if($cover)
           <img src="{{ kgp_image($cover->file_path, 'proj-'.$project->id, 800, 600) }}"
                alt="{{ $project->title }}"

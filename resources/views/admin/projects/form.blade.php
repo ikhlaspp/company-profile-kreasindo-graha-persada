@@ -29,11 +29,23 @@
                         @foreach ($item->images as $img)
                             <div class="relative aspect-square overflow-hidden rounded-lg ring-1 ring-line">
                                 <img src="{{ \Illuminate\Support\Facades\Storage::url($img->file_path) }}" class="h-full w-full object-cover" alt="" loading="lazy">
-                                @if ($img->is_cover)<span class="absolute bottom-1 left-1 rounded bg-brass-500 px-1.5 py-0.5 text-[9px] font-bold uppercase text-navy-900">Cover</span>@endif
+                                @if ($img->is_cover)
+                                    <span class="absolute bottom-1 left-1 rounded bg-brass-500 px-1.5 py-0.5 text-[9px] font-bold uppercase text-navy-900">Cover</span>
+                                @else
+                                    <button type="button" title="Jadikan cover"
+                                        onclick="var f=document.getElementById('kgp-cover-form'); f.action='{{ route('panel.projects.photos.cover', [$item->id, $img->id]) }}'; f.submit();"
+                                        class="absolute bottom-1 left-1 grid h-6 w-6 place-items-center rounded-full bg-navy-900/80 text-brass-300 shadow-sm transition-colors hover:bg-navy-900"><x-admin.icon name="spark" class="h-3.5 w-3.5" /></button>
+                                @endif
+                                <button type="button"
+                                    @click="$dispatch('open-modal-delete', { label: 'foto ini', url: @js(route('panel.projects.photos.destroy', [$item->id, $img->id])) })"
+                                    class="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-danger/90 text-white shadow-sm transition-colors hover:bg-danger"
+                                    title="Hapus foto">
+                                    <x-admin.icon name="x" class="h-3.5 w-3.5" />
+                                </button>
                             </div>
                         @endforeach
                     </div>
-                    <p class="text-xs text-slate-500">Unggah foto baru di bawah untuk menambah ke galeri.</p>
+                    <p class="text-xs text-slate-500">Klik <span class="font-semibold">✕</span> untuk menghapus, atau ikon <span class="font-semibold">bintang</span> untuk menjadikan foto sebagai cover. Unggah foto baru di bawah untuk menambah.</p>
                 @endif
                 <x-admin.form.image-multi />
             </div>
@@ -61,4 +73,9 @@
             <x-admin.btn variant="primary" type="submit"><x-admin.icon name="check" class="h-4 w-4" />{{ $editing ? 'Simpan Perubahan' : 'Simpan Proyek' }}</x-admin.btn>
         </div>
     </form>
+
+    {{-- Form tersembunyi untuk aksi "Jadikan Cover" (di luar form utama). --}}
+    <form id="kgp-cover-form" method="POST" class="hidden">@csrf @method('PATCH')</form>
+
+    <x-admin.modal name="delete" title="Hapus Foto" message="Foto berikut akan dihapus permanen:" />
 @endsection
