@@ -5,7 +5,9 @@
         @if ($label)<span class="block text-[13px] font-semibold text-navy-800">{{ $label }}</span>@endif
         @if ($hint)<span class="mt-0.5 block text-xs text-slate-500">{{ $hint }}</span>@endif
     </span>
-    <input type="hidden" name="{{ $name }}" :value="on ? 1 : 0">
+    {{-- value dirender server sebagai cadangan; Alpine memperbaruinya saat diklik.
+         Tanpa nilai bawaan ini, form gagal validasi (required|boolean) bila Alpine tidak sempat jalan. --}}
+    <input type="hidden" name="{{ $name }}" value="{{ old($name, $checked) ? 1 : 0 }}" x-bind:value="on ? 1 : 0">
     <button type="button" @click="on = !on" role="switch" :aria-checked="on"
             class="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors"
             :class="on ? 'bg-success' : 'bg-slate-300'">

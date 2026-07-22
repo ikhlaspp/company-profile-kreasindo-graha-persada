@@ -1,3 +1,16 @@
+{{-- Error validasi — sengaja TANPA Alpine/x-cloak agar tetap tampil
+     walau JavaScript gagal dimuat. --}}
+@if ($errors->any())
+    <div class="mb-6 rounded-xl border border-danger/30 bg-danger/5 px-4 py-3 text-sm text-danger">
+        <p class="mb-1 font-semibold">Gagal menyimpan. Mohon periksa isian berikut:</p>
+        <ul class="list-inside list-disc space-y-0.5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 @if (session('success') || session('error'))
     @php $isError = (bool) session('error'); @endphp
     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4500)" x-cloak
